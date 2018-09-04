@@ -6,7 +6,7 @@ public class App {
         protected String name;
         protected String email;
         protected String password;
-        //인스턴스의 메모리를 다루는 operator = setter/gatter = accessor = property = message
+        //인스턴스의 메모리를 다루는 operator = setter/gatter = accessor = property =message
         public String getName() {
             return name;
         }
