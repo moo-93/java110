@@ -1,13 +1,37 @@
 import java.util.Scanner;
 
 public class App {
-    private static String[] names = new String[100];
-    private static String[] emails = new String[100];
-    private static String[] passwords = new String[100];
+    //여러 속성의 값을 관리하기 쉽도록 사용자 정의 데이터 타입을 만들어 사용한다.
+    static class Member{
+        protected String name;
+        protected String email;
+        protected String password;
+        //인스턴스의 메모리를 다루는 operator = setter/gatter = accessor = property = message
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public String getEmail() {
+            return email;
+        }
+        public void setEmail(String email) {
+            this.email = email;
+        }
+        public String getPassword() {
+            return password;
+        }
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
     
-    private static int index = 0;
+    static Member[] members = new Member[100];
+    
+    static int index = 0;
 
-    private static Scanner KeyIn = new Scanner(System.in);
+    static Scanner KeyIn = new Scanner(System.in);
 
     public static void main(String[] args) {
         inputMembers();
@@ -15,24 +39,25 @@ public class App {
         KeyIn.close();
     }
     
-    public static void printMembers() {
+    static void printMembers() {
         for(int i = 0; i < index; i++) {
-            System.out.printf("%s %s %s\n",names[i],emails[i],passwords[i]);
+            System.out.printf("%s %s %s\n",members[i].getName(),members[i].getEmail(),members[i].getPassword());
         }
     }
 
-    public static void inputMembers() {
+    static void inputMembers() {
         while(true) {
+            Member m = new Member();
             System.out.print("이름 : ");
-            names[index] = KeyIn.nextLine();
+            m.setName(KeyIn.nextLine());
 
             System.out.print("이메일 : ");
-            emails[index] = KeyIn.nextLine();
+            m.setEmail(KeyIn.nextLine());
 
             System.out.print("암호 : ");
-            passwords[index] = KeyIn.nextLine();
-
-            index++;
+            m.setPassword(KeyIn.nextLine());
+            
+            members[index++] = m;
 
             System.out.println("continue? (Y/n) ");
             String answer = KeyIn.nextLine();
