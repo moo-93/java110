@@ -44,7 +44,7 @@ public class App {
             System.out.printf("%s %s %s\n",members[i].getName(),members[i].getEmail(),members[i].getPassword());
         }
     }
-
+//merge test
     static void inputMembers() {
         while(true) {
             //inner class 가져올때 외부 객체를 만들어준 후 내부객체를 가지고 옴다.
