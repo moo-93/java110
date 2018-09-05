@@ -5,7 +5,7 @@ import bitcamp.java110.cms.domain.Member;
 
 
 public class StudentController {
-    static Student[] students = new Student[100];
+    static Student[] students = new Student[5];
     static int studentIndex = 0;
     public static Scanner KeyIn;
 
@@ -36,7 +36,8 @@ public class StudentController {
 
     public static void serviceStudentMenu() {
         while(true) {
-            System.out.println("[list] or [add] or [quit]");
+            System.out.println("[list] or [add] or [delete]"
+                    + " or [detail] or [quit] ");
             System.out.print("학생 관리 > ");
 
             String command = KeyIn.nextLine();
@@ -45,6 +46,10 @@ public class StudentController {
                 printStudents();
             } else if(command.equals("add")) {
                 inputStudents();
+            } else if(command.equals("delete")) {
+                deleteStudent();
+            } else if(command.equals("detail")) {
+                detailStudent();
             } else if(command.equals("quit")) {
                 break;
             } else {
@@ -57,7 +62,8 @@ public class StudentController {
         int cnt = 0;
         for(Student s : students) {
             if(cnt++ == studentIndex) break;
-            System.out.printf("%s, %s, %s, %s, %b, %s\n"
+            System.out.printf("%d : %s, %s, %s, %s, %b, %s\n"
+                    ,cnt-1
                     ,s.getName()
                     ,s.getEmail()
                     ,s.getPassword()
@@ -94,6 +100,11 @@ public class StudentController {
 
             System.out.print("전화번호 : ");
             s.setTel(KeyIn.nextLine());
+
+            if(studentIndex == students.length) {
+                increaseStorage();
+            }
+
             students[studentIndex++] = s;
 
             System.out.print("continue? (Y/n) ");
@@ -101,4 +112,64 @@ public class StudentController {
             if(answer.toLowerCase().equals("n")) break;
         }
     }
+
+    private static void increaseStorage() {
+        Student[] newList = new Student[students.length+3];
+        for(int i = 0; i< students.length; i++) {
+            newList[i] = students[i];
+        }
+        students = newList;
+    }
+
+    private static void deleteStudent() {
+        System.out.print("삭제할 번호 : ");
+        int num = Integer.parseInt(KeyIn.nextLine());
+        
+        if(num < 0 || num > studentIndex) {
+            System.out.println("무효한 번호입니다.");
+            return;
+        }
+
+        for(int i = num; i < studentIndex - 1; i++) {
+            students[i] = students[i+1];
+        }
+        studentIndex--;
+
+        System.out.println("삭제 완료");
+    }
+
+    private static void detailStudent() {
+        System.out.print("조회할 번호 : ");
+        int num = Integer.parseInt(KeyIn.nextLine());
+
+        if(num < 0 || num > studentIndex) {
+            System.out.println("무효한 번호입니다.");
+            return;
+        }
+
+        System.out.printf("이름 : %s\n", students[num].getName());
+        System.out.printf("이메일 : %s\n", students[num].getEmail());
+        System.out.printf("암호 : %s\n", students[num].getPassword());
+        System.out.printf("최종학력 : %s\n", students[num].getSchool());
+        System.out.printf("전화 : %s\n", students[num].getTel());
+        System.out.printf("재직여부 : %b\n", students[num].isWorking());
+    }
+
+    /*static {
+        Student s = new Student();
+        s.setName("a");
+        students[studentIndex++]=s;
+        s = new Student();
+        s.setName("b");
+        students[studentIndex++]=s;
+        s = new Student();
+        s.setName("c");
+        students[studentIndex++]=s;
+        s = new Student();
+        s.setName("d");
+        students[studentIndex++]=s;
+        s = new Student();
+        s.setName("e");
+        students[studentIndex++]=s;
+    }*/
 }
