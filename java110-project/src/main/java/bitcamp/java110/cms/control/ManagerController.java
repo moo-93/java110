@@ -1,9 +1,12 @@
+package bitcamp.java110.cms.control;
+
 import java.util.Scanner;
+import bitcamp.java110.cms.domain.Member;
 
 public class ManagerController {
     static Manager[] managers = new Manager[100];
     static int managerIndex = 0;
-    static Scanner KeyIn;
+    public static Scanner KeyIn;
     
     static class Manager extends Member{   
         protected String tel;
@@ -23,7 +26,7 @@ public class ManagerController {
         }
     }
     
-    static void serviceManagerMenu() {
+    public static void serviceManagerMenu() {
         while(true) {
             System.out.println("[list] or [add] or [quit]");
             System.out.print("매니져 관리 > ");
@@ -42,7 +45,7 @@ public class ManagerController {
         }
     }
     
-    static void printManagers() {
+    private static void printManagers() {
         int cnt = 0;
         for(Manager m : managers) {
             if(cnt++ == managerIndex) break;
@@ -55,7 +58,7 @@ public class ManagerController {
         }
     }
     
-    static void inputManagers() {
+    private static void inputManagers() {
         while(true) {
             //inner class 가져올때 외부 객체를 만들어준 후 내부객체를 가지고 옴다.
             /*App a = new App();

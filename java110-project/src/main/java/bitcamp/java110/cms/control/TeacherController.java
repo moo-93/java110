@@ -1,9 +1,13 @@
+package bitcamp.java110.cms.control;
+
 import java.util.Scanner;
+import bitcamp.java110.cms.domain.Member;
+
 
 public class TeacherController {
     static Teacher[] teachers = new Teacher[100];
     static int teacherIndex = 0;
-    static Scanner KeyIn;
+    public static Scanner KeyIn;
     
     static class Teacher extends Member{
         protected String tel;
@@ -30,7 +34,7 @@ public class TeacherController {
         }
     }
     
-    static void serviceTeacherMenu() {
+    public static void serviceTeacherMenu() {
         while(true) {
             System.out.println("[list] or [add] or [quit]");
             System.out.print("강사 관리 > ");
@@ -49,7 +53,7 @@ public class TeacherController {
         }
     }
     
-    static void printTeachers() {
+    private static void printTeachers() {
         int cnt = 0;
         for(Teacher t : teachers) {
             if(cnt++ == teacherIndex) break;
@@ -63,7 +67,7 @@ public class TeacherController {
         }
     }
     
-    static void inputTeachers() {
+    private static void inputTeachers() {
         while(true) {
             //inner class 가져올때 외부 객체를 만들어준 후 내부객체를 가지고 옴다.
             /*App a = new App();
