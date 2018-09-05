@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class App {
     //여러 속성의 값을 관리하기 쉽도록 사용자 정의 데이터 타입을 만들어 사용한다.
-     static class Member{
+    static class Member{
         protected String name;
         protected String email;
         protected String password;
@@ -27,34 +27,83 @@ public class App {
         }
     }
     
-    static Member[] members = new Member[100];
     
+    static Member[] members = new Member[100];
+
     static int index = 0;
 
     static Scanner KeyIn = new Scanner(System.in);
 
     public static void main(String[] args) {
-        inputMembers();
-        printMembers();
+
+        while(true) {
+            String menu = promptMenu();
+
+            if(menu.equals("1")) {
+                serviceStudentMenu();
+            } else if (menu.equals("0")){
+                System.out.println("사용해주셔서 감사합니다!");
+                break;
+            }
+        }
         KeyIn.close();
     }
-    
+
+    private static void serviceStudentMenu() {
+        while(true) {
+            System.out.println("[list] or [add] or [quit]");
+            System.out.print("학생 관리 > ");
+
+            String command = KeyIn.nextLine();
+
+            if (command.equals("list")) {    
+                printMembers();
+            } else if(command.equals("add")) {
+                inputMembers();
+            } else if(command.equals("quit")) {
+                break;
+            } else {
+                System.out.println("유효하지 않는 명령입니다.");
+            }
+        }
+    }
+
+    private static String promptMenu() {
+        System.out.println("[메뉴]");
+        System.out.println("1.학생관리\t 2.강사관리\t 3.매니저관리\t 0.종료");
+
+        while(true) {
+            System.out.print("input menu > ");
+
+            String menu = KeyIn.nextLine();
+            switch(menu) {
+            case "1":
+            case "2":
+            case "3":
+            case "0":
+                return menu;
+            default:
+                System.out.println("메뉴 번호가 유효하지 않습니다.");
+            }
+        }
+    }
+
     static void printMembers() {
         for(int i = 0; i < index; i++) {
             System.out.printf("%s %s %s\n",members[i].getName(),members[i].getEmail(),members[i].getPassword());
         }
     }
-//merge test
+    //merge test
     static void inputMembers() {
         while(true) {
             //inner class 가져올때 외부 객체를 만들어준 후 내부객체를 가지고 옴다.
             /*App a = new App();
             App.Member m = a.new Member();*/
-            
+
             //static nested inner class
-//            App.Member m = new App.Member();
+            //App.Member m = new App.Member();
             Member m = new Member();
-            
+
             System.out.print("이름 : ");
             m.setName(KeyIn.nextLine());
 
@@ -63,7 +112,7 @@ public class App {
 
             System.out.print("암호 : ");
             m.setPassword(KeyIn.nextLine());
-            
+
             members[index++] = m;
 
             System.out.println("continue? (Y/n) ");
