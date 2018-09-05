@@ -7,10 +7,10 @@ public class StudentList {
     static int studentIndex = 0;
 
     public static void add(Student student) {
-            if(studentIndex == students.length) {
-                increaseStorage();
-            }
-            students[studentIndex++] = student;
+        if(studentIndex == students.length) {
+            increaseStorage();
+        }
+        students[studentIndex++] = student;
     }
 
     private static void increaseStorage() {
@@ -31,11 +31,11 @@ public class StudentList {
         }
         studentIndex--;
     }
-    
+
     public static int size() {
         return studentIndex;
     }
-    
+
     public static Student get(int num) {
         if(num < 0 || num > studentIndex) {
             return null;
