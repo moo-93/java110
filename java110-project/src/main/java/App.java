@@ -27,8 +27,33 @@ public class App {
         }
     }
     
+    static class Student extends Member{
+        protected String school;
+        protected boolean working;
+        protected String tel;
+        
+        public String getSchool() {
+            return school;
+        }
+        public void setSchool(String school) {
+            this.school = school;
+        }
+        public boolean isWorking() {
+            return working;
+        }
+        public void setWorking(boolean working) {
+            this.working = working;
+        }
+        public String getTel() {
+            return tel;
+        }
+        public void setTel(String tel) {
+            this.tel = tel;
+        }
+        
+    }
     
-    static Member[] members = new Member[100];
+    static Student[] students = new Student[100];
 
     static int index = 0;
 
@@ -57,9 +82,9 @@ public class App {
             String command = KeyIn.nextLine();
 
             if (command.equals("list")) {    
-                printMembers();
+                printStudents();
             } else if(command.equals("add")) {
-                inputMembers();
+                inputStudents();
             } else if(command.equals("quit")) {
                 break;
             } else {
@@ -88,13 +113,21 @@ public class App {
         }
     }
 
-    static void printMembers() {
-        for(int i = 0; i < index; i++) {
-            System.out.printf("%s %s %s\n",members[i].getName(),members[i].getEmail(),members[i].getPassword());
+    static void printStudents() {
+        int cnt = 0;
+        for(Student s : students) {
+            if(cnt++ == index) break;
+            System.out.printf("%s, %s, %s, %s, %b, %s\n"
+                    ,s.getName()
+                    ,s.getEmail()
+                    ,s.getPassword()
+                    ,s.getSchool()
+                    ,s.isWorking()
+                    ,s.getTel());
         }
     }
     //merge test
-    static void inputMembers() {
+    static void inputStudents() {
         while(true) {
             //inner class 가져올때 외부 객체를 만들어준 후 내부객체를 가지고 옴다.
             /*App a = new App();
@@ -102,7 +135,7 @@ public class App {
 
             //static nested inner class
             //App.Member m = new App.Member();
-            Member m = new Member();
+            Student m = new Student();
 
             System.out.print("이름 : ");
             m.setName(KeyIn.nextLine());
@@ -112,8 +145,16 @@ public class App {
 
             System.out.print("암호 : ");
             m.setPassword(KeyIn.nextLine());
-
-            members[index++] = m;
+            
+            System.out.println("최종학력  : ");
+            m.setSchool(KeyIn.nextLine());
+            
+            System.out.println("재직여부 : (true/false)");
+            m.setWorking(Boolean.parseBoolean(KeyIn.nextLine()));
+            
+            System.out.println("전화번호 : ");
+            m.setTel(KeyIn.nextLine());
+            students[index++] = m;
 
             System.out.println("continue? (Y/n) ");
             String answer = KeyIn.nextLine();
