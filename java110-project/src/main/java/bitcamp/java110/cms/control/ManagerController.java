@@ -3,11 +3,11 @@ package bitcamp.java110.cms.control;
 import java.util.Scanner;
 
 import bitcamp.java110.cms.domain.Manager;
-import bitcamp.java110.cms.util.ArrayList;
+import bitcamp.java110.cms.util.LinkedList;
 
 public class ManagerController {
    
-    private ArrayList<Manager> managers = new ArrayList<>();
+    private LinkedList<Manager> managers = new LinkedList<>();
     public Scanner KeyIn;
    
     public ManagerController(Scanner KeyIn) {
