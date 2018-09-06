@@ -3,17 +3,19 @@ package bitcamp.java110.cms.control;
 import java.util.Scanner;
 
 import bitcamp.java110.cms.domain.Student;
-import bitcamp.java110.cms.util.LinkedList;
+import bitcamp.java110.cms.util.List;
 
 public class StudentController {
 
-    private LinkedList<Student> students = new LinkedList<>();
+    private List<Student> students;
     public Scanner KeyIn;
-    
-    public StudentController(Scanner KeyIn) {
+
+    public StudentController(Scanner KeyIn, List<Student> students) {
         this.KeyIn=KeyIn;
+        this.students = students;
+        init();
     }
-    
+
     public void serviceStudentMenu() {
         while(true) {
             System.out.println("[list] or [add] or [delete]"
@@ -114,7 +116,7 @@ public class StudentController {
         System.out.printf("재직여부 : %b\n", student.isWorking());
     }
 
-     { //인스턴스 블록
+    private void init() { //인스턴스 블록
         Student s = new Student();
         s.setName("a");
         students.add(s);

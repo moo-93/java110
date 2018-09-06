@@ -3,6 +3,11 @@ import java.util.Scanner;
 import bitcamp.java110.cms.control.ManagerController;
 import bitcamp.java110.cms.control.StudentController;
 import bitcamp.java110.cms.control.TeacherController;
+import bitcamp.java110.cms.domain.Manager;
+import bitcamp.java110.cms.domain.Student;
+import bitcamp.java110.cms.domain.Teacher;
+import bitcamp.java110.cms.util.ArrayList;
+import bitcamp.java110.cms.util.LinkedList;
 
 public class App {
     //여러 속성의 값을 관리하기 쉽도록 사용자 정의 데이터 타입을 만들어 사용한다.
@@ -11,9 +16,12 @@ public class App {
 
     public static void main(String[] args) {
 
-        StudentController sc = new StudentController(KeyIn);    
-        TeacherController tc = new TeacherController(KeyIn);
-        ManagerController mc = new ManagerController(KeyIn);
+        StudentController sc = new StudentController(
+                KeyIn, new LinkedList<Student>());    
+        TeacherController tc = new TeacherController(
+                KeyIn, new ArrayList<Teacher>());
+        ManagerController mc = new ManagerController(
+                KeyIn, new ArrayList<Manager>());
 
         while(true) {
             String menu = promptMenu();
