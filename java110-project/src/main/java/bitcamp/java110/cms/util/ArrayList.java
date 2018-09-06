@@ -1,14 +1,14 @@
 package bitcamp.java110.cms.util;
 
-public class ArrayList {
-     Object[] list = new Object[5];
-     int index = 0;
+public class ArrayList<T> {
+     private Object[] list = new Object[5];
+     private int index = 0;
     
-    public void add(Object obj) {
+    public void add(T t) {
         if(index == list.length) {
             increaseStorage();
         }
-        list[index++] = obj;
+        list[index++] = t;
     }
     
     private void increaseStorage() {
@@ -34,10 +34,11 @@ public class ArrayList {
         return index; 
     }
     
-    public Object get(int num) {
+    @SuppressWarnings("unchecked")
+    public T get(int num) {
         if(num < 0 || num > index ) {
             return null;
         }
-        return list[num];
+        return (T)list[num];
     }
 }
