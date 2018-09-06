@@ -11,19 +11,19 @@ public class App {
 
     public static void main(String[] args) {
 
-        StudentController.KeyIn = KeyIn;
-        TeacherController.KeyIn = KeyIn;
-        ManagerController.KeyIn = KeyIn;
+        StudentController sc = new StudentController(KeyIn);    
+        TeacherController tc = new TeacherController(KeyIn);
+        ManagerController mc = new ManagerController(KeyIn);
 
         while(true) {
             String menu = promptMenu();
             
             if(menu.equals("1")) {
-                StudentController.serviceStudentMenu();
+                sc.serviceStudentMenu();
             } else if (menu.equals("2")) {
-                TeacherController.serviceTeacherMenu();  
+                tc.serviceTeacherMenu();  
             } else if (menu.equals("3")) {
-                ManagerController.serviceManagerMenu();
+                mc.serviceManagerMenu();
             } else if (menu.equals("0")){
                 System.out.println("사용해주셔서 감사합니다!");
                 break;
