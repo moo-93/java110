@@ -1,5 +1,6 @@
 package bitcamp.java110.cms.control;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,12 +9,9 @@ import bitcamp.java110.cms.domain.Teacher;
 
 public class TeacherController implements Controller{
 
-    private List<Teacher> teachers;
-  
-    public TeacherController(List<Teacher> teachers) {
-        this.teachers = teachers;
-    }
-    
+    public String name = "2";
+    private List<Teacher> teachers = new ArrayList<>();
+
     public void service(Scanner KeyIn) {
         while(true) {
             System.out.println("[list] or [add] or [delete]"
