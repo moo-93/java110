@@ -39,7 +39,7 @@ public class ManagerController implements Controller{
     
     private void printManagers() {
         for(int i = 0; i < managers.size(); i++) {
-            Manager m = (Manager)managers.get(i);
+            Manager m = managers.get(i);
             System.out.printf("%d : %s, %s, %s, %s, %s\n"
                     ,i
                     ,m.getName()
@@ -99,7 +99,7 @@ public class ManagerController implements Controller{
             System.out.println("무효한 번호입니다.");
             return;
         }
-        Manager m = (Manager)managers.get(num);
+        Manager m = managers.get(num);
 
         System.out.printf("이름 : %s\n", m.getName());
         System.out.printf("이메일 : %s\n", m.getEmail());
