@@ -6,17 +6,15 @@ import java.util.Scanner;
 import bitcamp.java110.cms.domain.Teacher;
 
 
-public class TeacherController {
+public class TeacherController implements Controller{
 
     private List<Teacher> teachers;
-    public Scanner KeyIn;
   
-    public TeacherController(Scanner KeyIn, List<Teacher> teachers) {
-        this.KeyIn=KeyIn;
+    public TeacherController(List<Teacher> teachers) {
         this.teachers = teachers;
     }
     
-    public void serviceTeacherMenu() {
+    public void service(Scanner KeyIn) {
         while(true) {
             System.out.println("[list] or [add] or [delete]"
                     + " or [detail] or [quit] ");
@@ -27,11 +25,11 @@ public class TeacherController {
             if (command.equals("list")) {    
                 printTeachers();
             } else if(command.equals("add")) {
-                inputTeachers();
+                inputTeachers(KeyIn);
             }else if(command.equals("delete")) {
-                deleteTeacher();
+                deleteTeacher(KeyIn);
             } else if(command.equals("detail")) {
-                detailTeacher();
+                detailTeacher(KeyIn);
             } else if(command.equals("quit")) {
                 break;
             } else {
@@ -54,7 +52,7 @@ public class TeacherController {
         }
     }
     
-    private void inputTeachers() {
+    private void inputTeachers(Scanner KeyIn) {
         while(true) {
             Teacher t = new Teacher();
 
@@ -86,7 +84,7 @@ public class TeacherController {
     
   
 
-    private void deleteTeacher() {
+    private void deleteTeacher(Scanner KeyIn) {
         System.out.print("삭제할 번호 : ");
         int num = Integer.parseInt(KeyIn.nextLine());
         
@@ -98,7 +96,7 @@ public class TeacherController {
         System.out.println("삭제 완료");
     }
 
-    private void detailTeacher() {
+    private void detailTeacher(Scanner KeyIn) {
         System.out.print("조회할 번호 : ");
         int num = Integer.parseInt(KeyIn.nextLine());
 
@@ -115,4 +113,5 @@ public class TeacherController {
         System.out.printf("시급 : %s\n", t.getPay());
         System.out.printf("강의과목 : %s\n", t.getSubjects());
     }
+
 }

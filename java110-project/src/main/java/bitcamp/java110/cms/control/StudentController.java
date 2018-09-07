@@ -5,18 +5,16 @@ import java.util.Scanner;
 
 import bitcamp.java110.cms.domain.Student;
 
-public class StudentController {
+public class StudentController implements Controller{
 
     private List<Student> students;
-    public Scanner KeyIn;
 
-    public StudentController(Scanner KeyIn, List<Student> students) {
-        this.KeyIn=KeyIn;
+    public StudentController( List<Student> students) {
         this.students = students;
         init();
     }
 
-    public void serviceStudentMenu() {
+    public void service(Scanner KeyIn) {
         while(true) {
             System.out.println("[list] or [add] or [delete]"
                     + " or [detail] or [quit] ");
@@ -27,11 +25,11 @@ public class StudentController {
             if (command.equals("list")) {    
                 printStudents();
             } else if(command.equals("add")) {
-                inputStudents();
+                inputStudents(KeyIn);
             } else if(command.equals("delete")) {
-                deleteStudent();
+                deleteStudent(KeyIn);
             } else if(command.equals("detail")) {
-                detailStudent();
+                detailStudent(KeyIn);
             } else if(command.equals("quit")) {
                 break;
             } else {
@@ -54,7 +52,7 @@ public class StudentController {
         }
     }
 
-    private void inputStudents() {
+    private void inputStudents(Scanner KeyIn) {
         while(true) {
 
             Student s = new Student();
@@ -85,7 +83,7 @@ public class StudentController {
         }
     }
 
-    private void deleteStudent() {
+    private void deleteStudent(Scanner KeyIn) {
         System.out.print("삭제할 번호 : ");
         int num = Integer.parseInt(KeyIn.nextLine());
 
@@ -97,7 +95,7 @@ public class StudentController {
         System.out.println("삭제 완료");
     }
 
-    private void detailStudent() {
+    private void detailStudent(Scanner KeyIn) {
         System.out.print("조회할 번호 : ");
         int num = Integer.parseInt(KeyIn.nextLine());
 
