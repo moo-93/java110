@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import bitcamp.java110.cms.annotation.Component;
+import bitcamp.java110.cms.annotation.RequestMapping;
 import bitcamp.java110.cms.domain.Student;
 
-@Component("1")
-public class StudentController implements Controller{
+@Component("student")
+public class StudentController{
 
     private List<Student> students = new ArrayList<>();
 
@@ -16,7 +17,8 @@ public class StudentController implements Controller{
         init();
     }
 
-    public void service(Scanner KeyIn) {
+    @RequestMapping
+    public void student(Scanner KeyIn) {
         while(true) {
             System.out.println("[list] or [add] or [delete]"
                     + " or [detail] or [quit] ");
