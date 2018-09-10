@@ -1,19 +1,23 @@
+package bitcamp.java110.cms;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import bitcamp.java110.cms.context.ApplicationContext;
 import bitcamp.java110.cms.context.RequestMappingHandlerMapping;
 import bitcamp.java110.cms.context.RequestMappingHandlerMapping.RequestMappingHandler;
+import bitcamp.java110.cms.domain.Student;
 
 public class App {
     //여러 속성의 값을 관리하기 쉽도록 사용자 정의 데이터 타입을 만들어 사용한다.
 
+    public static ArrayList<Student> students = new ArrayList<>();
     static Scanner KeyIn = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
 
         ApplicationContext iocContainer = 
                 new ApplicationContext("bitcamp.java110.cms.control");
-
+        
         RequestMappingHandlerMapping requestHandlerMap = 
                 new RequestMappingHandlerMapping();
         
