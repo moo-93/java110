@@ -33,7 +33,11 @@ public class TeacherAddController {
             System.out.print("강의과목 : ");
             t.setSubjects(KeyIn.nextLine());
             
-            App.teachers.add(t);
+            if(App.teacherDao.insert(t) > 0) {
+                System.out.println("저장 성공!");
+            } else {
+                System.out.println("해당 이메일이 이미 존재합니다.");
+            }
 
             System.out.print("continue? (Y/n) ");
             String answer = KeyIn.nextLine();

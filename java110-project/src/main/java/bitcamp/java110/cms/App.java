@@ -1,5 +1,4 @@
 package bitcamp.java110.cms;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import bitcamp.java110.cms.context.ApplicationContext;
@@ -7,14 +6,14 @@ import bitcamp.java110.cms.context.RequestMappingHandlerMapping;
 import bitcamp.java110.cms.context.RequestMappingHandlerMapping.RequestMappingHandler;
 import bitcamp.java110.cms.dao.ManagerDao;
 import bitcamp.java110.cms.dao.StudentDao;
-import bitcamp.java110.cms.domain.Teacher;
+import bitcamp.java110.cms.dao.TeacherDao;
 
 public class App {
     //여러 속성의 값을 관리하기 쉽도록 사용자 정의 데이터 타입을 만들어 사용한다.
 
     public static StudentDao studentDao = new StudentDao();
     public static ManagerDao managerDao = new ManagerDao();
-    public static ArrayList<Teacher> teachers = new ArrayList<>();
+    public static TeacherDao teacherDao = new TeacherDao();
     static Scanner KeyIn = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {

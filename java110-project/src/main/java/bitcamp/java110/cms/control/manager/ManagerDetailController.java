@@ -12,7 +12,7 @@ public class ManagerDetailController {
 
     @RequestMapping("manager/detail")
     public void detail(Scanner KeyIn) {
-        System.out.print("조회할 이메일 : ");
+        System.out.print("조회할 매니저의 이메일 : ");
         String email = KeyIn.nextLine();
 
         Manager m = App.managerDao.findByEmail(email);
