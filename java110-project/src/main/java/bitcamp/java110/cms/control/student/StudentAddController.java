@@ -34,7 +34,11 @@ public class StudentAddController {
             System.out.print("전화번호 : ");
             s.setTel(KeyIn.nextLine());
 
-            App.students.add(s);
+            if(App.studentDao.insert(s) > 0) {
+                System.out.println("저장 완료!");
+            } else {
+                System.out.println("입력하신  이메일의 학생이 존재합니다.");
+            }
 
             System.out.print("continue? (Y/n) ");
             String answer = KeyIn.nextLine();
@@ -45,18 +49,23 @@ public class StudentAddController {
     {
         Student s = new Student();
         s.setName("a");
-        App.students.add(s);
+        s.setEmail("a@test.com");
+        App.studentDao.insert(s);
         s = new Student();
         s.setName("b");
-        App.students.add(s);
+        s.setEmail("b@test.com");
+        App.studentDao.insert(s);
         s = new Student();
         s.setName("c");
-        App.students.add(s);
+        s.setEmail("c@test.com");
+        App.studentDao.insert(s);
         s = new Student();
         s.setName("d");
-        App.students.add(s);
+        s.setEmail("d@test.com");
+        App.studentDao.insert(s);
         s = new Student();
         s.setName("e");
-        App.students.add(s);
+        s.setEmail("e@test.com");
+        App.studentDao.insert(s);
     }
 }
