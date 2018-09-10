@@ -2,10 +2,11 @@ package bitcamp.java110.cms.context;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import org.apache.ibatis.io.Resources;
+
+import bitcamp.java110.cms.annotation.Component;
 
 public class ApplicationContext {
     HashMap<String, Object> objPool = new HashMap<>();
@@ -53,15 +54,11 @@ public class ApplicationContext {
                // => 생성자를 가지고 인스턴스를 생성한다.
                Object instance = constructor.newInstance();
                
-               // => 이름으로 인스턴스의 필드를 찾는다.
-               Field field = clazz.getField("name");
+              // => 클래스에서 Component 에너테이션 정보를 추출 한다
+               Component anno = clazz.getAnnotation(Component.class);
                
-               // => "name" 필드의 값을 꺼낸다.
-               Object name = field.get(instance);
-               // System.out.println(clazz.getName()+"==>"+name);
-               
-               // => "name" 필드의 값으로 인스턴스를 objPool에 저장된다.
-               objPool.put((String)name, instance);
+               // => Componet 에너테이션 value 값으로 인스턴스를 objPool에 저장된다.
+               objPool.put(anno.value(), instance);
                } catch(Exception e) {
                    System.out.printf("%s 클래스는 기본 생성자가 없습니다.\n", clazz.getName());
                }
