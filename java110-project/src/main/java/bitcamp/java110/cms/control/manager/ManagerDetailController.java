@@ -9,17 +9,18 @@ import bitcamp.java110.cms.domain.Manager;
 
 @Component
 public class ManagerDetailController {
-    
+
     @RequestMapping("manager/detail")
     public void detail(Scanner KeyIn) {
-        System.out.print("조회할 번호 : ");
-        int num = Integer.parseInt(KeyIn.nextLine());
+        System.out.print("조회할 이메일 : ");
+        String email = KeyIn.nextLine();
 
-        if(num < 0 || num >= App.managers.size()) {
-            System.out.println("무효한 번호입니다.");
+        Manager m = App.managerDao.findByEmail(email);
+
+        if(m==null) {
+            System.out.println("해당 이메일이 존재하지 않습니다.");
             return;
         }
-        Manager m = App.managers.get(num);
 
         System.out.printf("이름 : %s\n", m.getName());
         System.out.printf("이메일 : %s\n", m.getEmail());

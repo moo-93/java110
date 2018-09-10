@@ -31,7 +31,11 @@ public class ManagerAddController {
             System.out.print("포지션 : ");
             m.setPosition(KeyIn.nextLine());
 
-            App.managers.add(m);
+            if(App.managerDao.insert(m) > 0) {
+                System.out.println("저장 완료!");   
+            } else {
+                System.out.println("해당 이메일이 존재합니다.");
+            }
 
             System.out.print("continue? (Y/n) ");
             String answer = KeyIn.nextLine();

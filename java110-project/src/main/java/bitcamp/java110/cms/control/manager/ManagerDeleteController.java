@@ -8,18 +8,16 @@ import bitcamp.java110.cms.annotation.RequestMapping;
 
 @Component
 public class ManagerDeleteController {
-    
+
     @RequestMapping("manager/delete")
     public void delete(Scanner KeyIn) {
-        System.out.print("삭제할 번호 : ");
-        int num = Integer.parseInt(KeyIn.nextLine());
-        
-        if(num < 0 || num >= App.managers.size()) {
-            System.out.println("무효한 번호입니다.");
-            return;
+        System.out.print("삭제할 이메일 : ");
+        String email = KeyIn.nextLine();
+
+        if(App.managerDao.delete(email) > 0) {
+            System.out.println("삭제 완료");    
+        } else {
+            System.out.println("해당 이메일이 존재하지 않습니다.");
         }
-        App.managers.remove(num);
-        System.out.println("삭제 완료");
     }
-    
 }
