@@ -14,7 +14,9 @@ import bitcamp.java110.cms.domain.Student;
 
 @Component
 public class StudentFileDao implements StudentDao{
-
+    
+    private List<Student> list = new ArrayList<>();
+    
     public StudentFileDao() {
         File dataFile = new File("data/student.dat");
         try(BufferedReader in = 
@@ -57,13 +59,11 @@ public class StudentFileDao implements StudentDao{
                                 ,s.isWorking()));
             }
             out.flush();
-            System.out.println("asdasd");
         } catch ( Exception e) {
             e.printStackTrace();
         }
     }
 
-    private List<Student> list = new ArrayList<>();
     public int insert(Student student) {
         
         for(Student item : list) {
@@ -77,12 +77,10 @@ public class StudentFileDao implements StudentDao{
     }
 
     public List<Student> findAll(){
-       
         return list;
     }
 
     public Student findByEmail(String email) {
-        save();
         for(Student item : list) {
             if(item.getEmail().equals(email)) {
                 return item;
@@ -95,6 +93,7 @@ public class StudentFileDao implements StudentDao{
         for(Student item : list) {
             if(item.getEmail().equals(email)) {
                 list.remove(item);
+                save();
                 return 1;
             }
         }
