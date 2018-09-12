@@ -8,7 +8,7 @@ public class Member implements Serializable{
     protected String name;
     protected String email;
     
-    // transient 필드 : Serialize 대상 제외
+    // transient 필드 : Serialize 대상 제외 
     protected transient String password;
     //인스턴스의 메모리를 다루는 operator = setter/gatter = accessor = property =message
     public String getName() {
