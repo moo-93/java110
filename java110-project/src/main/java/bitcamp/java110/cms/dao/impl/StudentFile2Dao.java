@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bitcamp.java110.cms.annotation.Component;
+import bitcamp.java110.cms.dao.DuplicationDaoException;
+import bitcamp.java110.cms.dao.MandatoryValueDaoException;
 import bitcamp.java110.cms.dao.StudentDao;
 import bitcamp.java110.cms.domain.Student;
 
@@ -18,7 +20,7 @@ import bitcamp.java110.cms.domain.Student;
 @Component
 public class StudentFile2Dao implements StudentDao{
 
-    static String defalutFilename = "data/manager2.dat";
+    static String defalutFilename = "data/student2.dat";
 
     String filename;
     private List<Student> list = new ArrayList<>();
@@ -34,9 +36,9 @@ public class StudentFile2Dao implements StudentDao{
                 BufferedInputStream in1 = new BufferedInputStream(in0);
                 ObjectInputStream in = new ObjectInputStream(in0);
                 ){
-            
+
             list = (List<Student>)in.readObject();
-           
+
         } catch ( Exception e) {
             e.printStackTrace();
         }
@@ -53,19 +55,28 @@ public class StudentFile2Dao implements StudentDao{
                 BufferedOutputStream out1 = new BufferedOutputStream(out0);
                 ObjectOutputStream out = new ObjectOutputStream(out1);
                 ){
-            
+
             out.writeObject(list);
-            
+
         } catch ( Exception e) {
             e.printStackTrace();
         }
     }
 
-    public int insert(Student student) {
+    public int insert(Student student)
+            throws MandatoryValueDaoException, DuplicationDaoException{
+        // 필수 입력 항목이 비었을 때,
+        if(student.getName().length() == 0 ||
+                student.getEmail().length() == 0 ||
+                student.getPassword().length() == 0) {
+
+            // 호출자에게 예외 정보를 만들어 던진다.
+            throw new MandatoryValueDaoException();
+        }
 
         for(Student item : list) {
             if(item.getEmail().equals(student.getEmail())) {
-                return 0;
+                throw new DuplicationDaoException();
             }
         }
         list.add(student);
