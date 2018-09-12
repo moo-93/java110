@@ -45,7 +45,7 @@ public class ManagerFile2Dao implements ManagerDao{
                 }
             } */  
         } catch (Exception e) {
-            System.out.println(e+"dd");
+            System.out.println(e);
         }
     }
     public ManagerFile2Dao() {
