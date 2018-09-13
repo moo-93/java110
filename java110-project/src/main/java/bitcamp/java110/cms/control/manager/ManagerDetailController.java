@@ -19,13 +19,13 @@ public class ManagerDetailController {
     }
     @RequestMapping("manager/detail")
     public void detail(Scanner KeyIn) {
-        System.out.print("조회할 매니저의 이메일 : ");
-        String email = KeyIn.nextLine();
+        System.out.print("조회할 매니저의 번호 : ");
+        int no = Integer.parseInt(KeyIn.nextLine());
 
-        Manager m = managerDao.findByEmail(email);
+        Manager m = managerDao.findByNo(no);
 
         if(m==null) {
-            System.out.println("해당 이메일이 존재하지 않습니다.");
+            System.out.println("해당 매니져의 번호가 존재하지 않습니다.");
             return;
         }
 

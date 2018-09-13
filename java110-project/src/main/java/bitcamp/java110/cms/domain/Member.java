@@ -7,10 +7,17 @@ public class Member implements Serializable{
     private static final long serialVersionUID = 1L;
     protected String name;
     protected String email;
+    protected int no;
+    protected String password;
     
-    // transient 필드 : Serialize 대상 제외 
-    protected transient String password;
     //인스턴스의 메모리를 다루는 operator = setter/gatter = accessor = property =message
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
+    }
+ 
     public String getName() {
         return name;
     }
