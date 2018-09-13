@@ -43,6 +43,12 @@ ALTER TABLE p1_memb
             mno -- 회원번호
         );
 
+-- 회원 유니크 인덱스
+CREATE UNIQUE INDEX UIX_p1_memb
+    ON p1_memb ( -- 회원
+        email ASC -- 이메일
+    );
+
 ALTER TABLE p1_memb
     MODIFY COLUMN mno INTEGER NOT NULL AUTO_INCREMENT COMMENT '회원번호';
 
@@ -170,8 +176,8 @@ ALTER TABLE p1_lect_tchr
 
 -- 수강생
 CREATE TABLE p1_lect_stud (
-    mrno INTEGER NOT NULL COMMENT '학생번호', -- 학생번호
-    lno  INTEGER NOT NULL COMMENT '강의번호' -- 강의번호
+    lno INTEGER NOT NULL COMMENT '강의번호', -- 강의번호
+    sno INTEGER NOT NULL COMMENT '학생번호' -- 학생번호
 )
 COMMENT '수강생';
 
@@ -179,8 +185,8 @@ COMMENT '수강생';
 ALTER TABLE p1_lect_stud
     ADD CONSTRAINT PK_p1_lect_stud -- 수강생 기본키
         PRIMARY KEY (
-            mrno, -- 학생번호
-            lno   -- 강의번호
+            lno, -- 강의번호
+            sno  -- 학생번호
         );
 
 -- 게시판
@@ -265,20 +271,20 @@ ALTER TABLE p1_lect_tchr
 
 -- 수강생
 ALTER TABLE p1_lect_stud
-    ADD CONSTRAINT FK_p1_mgr_TO_p1_lect_stud -- 매니저 -> 수강생
-        FOREIGN KEY (
-            mrno -- 학생번호
-        )
-        REFERENCES p1_mgr ( -- 매니저
-            mrno -- 매니저번호
-        );
-
--- 수강생
-ALTER TABLE p1_lect_stud
     ADD CONSTRAINT FK_p1_lect_TO_p1_lect_stud -- 강의 -> 수강생
         FOREIGN KEY (
             lno -- 강의번호
         )
         REFERENCES p1_lect ( -- 강의
             lno -- 강의번호
+        );
+
+-- 수강생
+ALTER TABLE p1_lect_stud
+    ADD CONSTRAINT FK_p1_stud_TO_p1_lect_stud -- 학생 -> 수강생
+        FOREIGN KEY (
+            sno -- 학생번호
+        )
+        REFERENCES p1_stud ( -- 학생
+            sno -- 학생번호
         );
