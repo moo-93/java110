@@ -19,13 +19,13 @@ public class TeacherDeleteController {
     
     @RequestMapping("teacher/delete")
     public void delete(Scanner KeyIn) {
-        System.out.print("삭제할 선생의 이메일 : ");
-        String email = KeyIn.nextLine();
+        System.out.print("삭제할 선생의 번호 : ");
+        int no = Integer.parseInt(KeyIn.nextLine());
         
-        if(teacherDao.delete(email) > 0) {
+        if(teacherDao.deleteByNo(no) > 0) {
          System.out.println("삭제 완료");   
         } else {
-            System.out.println("해당 선생의 이메일이 존재하지 않습니다.");
+            System.out.println("해당 선생의 번호가 존재하지 않습니다.");
         }
         
     }
