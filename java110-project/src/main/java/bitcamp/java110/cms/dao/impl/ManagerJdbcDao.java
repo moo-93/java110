@@ -51,7 +51,7 @@ public class ManagerJdbcDao implements ManagerDao{
 
             // 회원 번호로 매니저 테이블에 직위 정보를 입력한다.
             String sql2 = "insert into p1_mgr(mrno,posi)"
-                    + " value(" + memberNo
+                    + " values(" + memberNo
                     + ",'" + manager.getPosition()
                     + "')";
             stmt.executeUpdate(sql2);

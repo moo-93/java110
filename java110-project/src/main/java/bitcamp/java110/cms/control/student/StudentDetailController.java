@@ -20,13 +20,13 @@ public class StudentDetailController {
 
     @RequestMapping("student/detail")
     public void detail(Scanner KeyIn) {
-        System.out.print("조회할 학생의 이메일 : ");
-        String email = KeyIn.nextLine();
+        System.out.print("조회할 학생의 번호 : ");
+        int no = Integer.parseInt(KeyIn.nextLine());
 
-        Student student = studentDao.findByEmail(email);
+        Student student = studentDao.findByNo(no);
 
         if(student == null) {
-            System.out.println("해당 이메일의 학생 정보가 존재하지 않습니다.");
+            System.out.println("해당 학생 번호의 정보가 존재하지 않습니다.");
             return;
         }
 
