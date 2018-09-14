@@ -4,7 +4,16 @@ plugins {
     id 'eclipse'
 }
 
-mainClassName = 'App'
+//타입을 조정하는 느낌
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    //소스코드(문법) 8버젼까지 인정
+    sourceCompatibility = '1.8'
+    //jvm(jdk) 8버젼까지 인정
+    targetCompatibility = '1.8'
+}
+
+    mainClassName = 'bitcamp.java110.cms.App'
 
 // 프로젝트에서 사용할 라이브러리 등록
 // => 라이브러리 정보는 mavenrepository.com에서 검색하여 가져온다.
