@@ -7,13 +7,9 @@ import bitcamp.java110.cms.domain.Manager;
 
 public interface ManagerDao {
      
-    int insert(Manager manager) 
-            throws MandatoryValueDaoException, DuplicationDaoException;
+    int insert(Manager manager);
     List<Manager> findAll();
     Manager findByEmail(String email); 
-    default Manager findByNo(int no) {return null;}
-    default int delete(String email) {return 0;}
-    default int deleteByNo(int no) {return 0;}
-    
-
+    Manager findByNo(int no);
+    int deleteByNo(int no);
 }

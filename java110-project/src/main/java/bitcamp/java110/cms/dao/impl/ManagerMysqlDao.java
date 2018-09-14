@@ -13,7 +13,7 @@ import bitcamp.java110.cms.dao.ManagerDao;
 import bitcamp.java110.cms.domain.Manager;
 
 @Component
-public class ManagerJdbcDao implements ManagerDao{
+public class ManagerMysqlDao implements ManagerDao{
 
     public int insert(Manager manager) {
         Connection con = null;
