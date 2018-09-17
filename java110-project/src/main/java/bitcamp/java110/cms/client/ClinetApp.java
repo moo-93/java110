@@ -38,7 +38,7 @@ public class ClinetApp {
                 out.println(requestLine); out.flush();
                 while(true) {
                     String responseLine = in.readLine();
-                    if(responseLine.length() ==0)
+                    if(responseLine.length() == 0)
                         break;
                     System.out.println(responseLine);
                 }

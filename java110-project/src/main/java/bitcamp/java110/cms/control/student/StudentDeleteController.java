@@ -1,12 +1,14 @@
 package bitcamp.java110.cms.control.student;
 
-import java.util.Scanner;
+import java.io.PrintWriter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import bitcamp.java110.cms.annotation.RequestMapping;
 import bitcamp.java110.cms.dao.StudentDao;
+import bitcamp.java110.cms.server.Request;
+import bitcamp.java110.cms.server.Response;
 
 @Component
 public class StudentDeleteController {
@@ -19,13 +21,16 @@ public class StudentDeleteController {
     }
     
     @RequestMapping("student/delete")
-    public void delete(Scanner KeyIn) {
-        System.out.print("삭제할 학생의 번호 : ");
-        int no = Integer.parseInt(KeyIn.nextLine());
+    public void delete(Request request, Response response) {
+       
+        int no = Integer.parseInt(request.getParameter("no"));
+        
+        PrintWriter out = response.getWriter();
+        
         if(studentDao.deleteByNo(no)> 0) {
-            System.out.println("삭제 완료");
+            out.println("삭제 완료");
         } else {
-            System.out.println("해당 학생번호가 존재하지 않습니다.");
+            out.println("해당 학생번호가 존재하지 않습니다.");
         }
     }
 }

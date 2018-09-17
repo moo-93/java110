@@ -9,6 +9,7 @@ public class Member implements Serializable{
     protected String email;
     protected int no;
     protected String password;
+    protected String tel;
     
     //인스턴스의 메모리를 다루는 operator = setter/gatter = accessor = property =message
     public int getNo() {
@@ -35,5 +36,11 @@ public class Member implements Serializable{
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getTel() {
+        return tel;
+    }
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 }

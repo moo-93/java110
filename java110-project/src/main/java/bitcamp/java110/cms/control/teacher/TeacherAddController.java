@@ -1,6 +1,6 @@
 package bitcamp.java110.cms.control.teacher;
 
-import java.util.Scanner;
+import java.io.PrintWriter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import bitcamp.java110.cms.annotation.RequestMapping;
 import bitcamp.java110.cms.dao.TeacherDao;
 import bitcamp.java110.cms.domain.Teacher;
+import bitcamp.java110.cms.server.Request;
+import bitcamp.java110.cms.server.Response;
 
 @Component
 public class TeacherAddController {
@@ -18,39 +20,20 @@ public class TeacherAddController {
     public void setTeacherDao(TeacherDao teacherDao) {
         this.teacherDao = teacherDao;
     }
-    
+
     @RequestMapping("teacher/add")
-    public void add(Scanner KeyIn) {
-        while(true) {
+    public void add(Request request, Response response) {
             Teacher t = new Teacher();
 
-            System.out.print("이름 : ");
-            t.setName(KeyIn.nextLine());
+            t.setName(request.getParameter("name"));
+            t.setEmail(request.getParameter("email"));
+            t.setTel(request.getParameter("tel"));
+            t.setPay(Integer.parseInt(request.getParameter("pay")));
+            t.setSubjects(request.getParameter("subjects"));
 
-            System.out.print("이메일 : ");
-            t.setEmail(KeyIn.nextLine());
+            teacherDao.insert(t);
 
-            System.out.print("암호 : ");
-            t.setPassword(KeyIn.nextLine());
-            
-            System.out.print("전화번호  : ");
-            t.setTel(KeyIn.nextLine());
-            
-            System.out.print("시급 : ");
-            t.setPay(Integer.parseInt(KeyIn.nextLine()));
-            
-            System.out.print("강의과목 : ");
-            t.setSubjects(KeyIn.nextLine());
-            
-            if(teacherDao.insert(t) > 0) {
-                System.out.println("저장 성공!");
-            } else {
-                System.out.println("해당 이메일이 이미 존재합니다.");
-            }
-
-            System.out.print("continue? (Y/n) ");
-            String answer = KeyIn.nextLine();
-            if(answer.toLowerCase().equals("n")) break;
-        }
+            PrintWriter out = response.getWriter();
+            out.println("등록하였습니다.");
     }
 }
