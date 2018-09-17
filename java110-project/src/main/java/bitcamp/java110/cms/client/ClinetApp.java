@@ -13,45 +13,38 @@ public class ClinetApp {
 
     public static void main(String[] args) throws Exception {
 
-        try (
-                // 서버에 연결하기
-                Socket socket = new Socket("192.168.0.8", 8888);
-
-                // 서버에 데이터를 보내고 읽을 도구를 준비하기
-                PrintStream out = new PrintStream(
-                        new BufferedOutputStream(
-                                socket.getOutputStream()));
-
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(
-                                socket.getInputStream()));
-                ) {
-            // 클라이언트에서 보내면
-            // 서버에서 읽었을때  readLine()
-            // 다음 라인으로 넘어간다.
-            out.println("내가 바로 갓종규다 !");
-            out.flush();
-            System.out.println(in.readLine());
-            
-            while(true) {
-                String requestLine = prompt();
+        while(true) {
+            // 사용자로부터 명령어를 입력 받는다.
+            String requestLine = prompt();
+            if (requestLine.equals("EXIT")){
+                System.out.println("goodbye");
+                break;
+            }
+            try (
+                    Socket socket = new Socket("192.168.0.8", 8888);
+                    PrintStream out = new PrintStream(
+                            new BufferedOutputStream(
+                                    socket.getOutputStream()));
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(
+                                    socket.getInputStream()));
+                    ) {
+                // 입력 받은 명령어를 서버에 보낸다.
                 out.println(requestLine); out.flush();
+                
+                // 서버가 응답한 내용을 받아서 출력한다.
                 while(true) {
                     String responseLine = in.readLine();
                     if(responseLine.length() == 0)
                         break;
                     System.out.println(responseLine);
-                }
-
-                if (requestLine.equals("EXIT")){
-                    System.out.println("goodbye");
-                    break;
-                }
-
+                } 
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }
+        } //while
         KeyIn.close();
-    }
+    } //main
 
 
     private static String prompt() {
