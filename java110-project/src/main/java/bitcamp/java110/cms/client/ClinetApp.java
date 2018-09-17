@@ -15,7 +15,7 @@ public class ClinetApp {
 
         try (
                 // 서버에 연결하기
-                Socket socket = new Socket("localhost", 8888);
+                Socket socket = new Socket("192.168.0.8", 8888);
 
                 // 서버에 데이터를 보내고 읽을 도구를 준비하기
                 PrintStream out = new PrintStream(
@@ -29,7 +29,7 @@ public class ClinetApp {
             // 클라이언트에서 보내면
             // 서버에서 읽었을때  readLine()
             // 다음 라인으로 넘어간다.
-            out.println("HELLO");
+            out.println("내가 바로 갓종규다 !");
             out.flush();
             System.out.println(in.readLine());
             

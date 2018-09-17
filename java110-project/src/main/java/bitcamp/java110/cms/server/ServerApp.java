@@ -55,10 +55,31 @@ public class ServerApp {
         ServerSocket serverSocket = new ServerSocket(8888);
         System.out.println("서버 실행 중...");
         while(true) {
+            Socket socket = serverSocket.accept();
+            RequestWorker worker = new RequestWorker(socket);
+            new Thread(worker).start();
+            
+        }
+    }
 
+    public static void main(String[] args) throws Exception {
+        ServerApp serverApp = new ServerApp();
+        serverApp.service();
+    }
+
+    class RequestWorker implements Runnable {
+
+        protected Socket socket;
+
+        public RequestWorker(Socket socket) {
+            this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            // 이 메서드에 "main" 스레드에서 분리하여 독립적으로 수행할 코드를 둔다.
             try (
-                    Socket socket = serverSocket.accept();
-
+                    Socket socket = this.socket;
                     PrintWriter out = new PrintWriter(
                             new BufferedOutputStream(
                                     socket.getOutputStream()));
@@ -77,10 +98,10 @@ public class ServerApp {
                         out.flush();
                         break;
                     }
-                    
+
                     // 요청 객체 준비
                     Request request = new Request(requestLine);
-                    
+
                     // 응답 객체 준비
                     Response response = new Response(out);
 
@@ -101,22 +122,14 @@ public class ServerApp {
                         e.printStackTrace();
                         out.println("요청 처리 중 오류가 발생하였습니다.");
                     }
-
-                   /* try {
-                        mapping.getMethod().invoke(mapping.getInstance(), out);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        out.println("요청 처리 중 오류가 발생했습니다.");
-                    }*/
                     out.println();
                     out.flush();
                 }
+            } catch(Exception e) {//try
+                System.out.println(e.getMessage());
             }
-        }
-    }
-    
-    public static void main(String[] args) throws Exception {
-        ServerApp serverApp = new ServerApp();
-        serverApp.service();
-    }
-}
+        } // run method
+
+    } // RequestWorker class
+
+} // Server class 
