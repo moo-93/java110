@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'application'
-    id 'eclipse'
+    id 'eclipse-wtp'
+    id 'war'
 }
 
 //타입을 조정하는 느낌
@@ -13,11 +13,12 @@ tasks.withType(JavaCompile) {
     targetCompatibility = '1.8'
 }
 
-    mainClassName = 'bitcamp.java110.cms.App'
-
 // 프로젝트에서 사용할 라이브러리 등록
 // => 라이브러리 정보는 mavenrepository.com에서 검색하여 가져온다.
 dependencies {
+    // Servlet API 라이브러리
+    // 컴파일할때만 사용하고 빌드(배포)할때는 제외
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     // Spring Ioc 컨테이너 핵심 라이브러리
     compile group: 'org.springframework', name: 'spring-context', version: '5.0.9.RELEASE'
     // mariadb jdbc driver
