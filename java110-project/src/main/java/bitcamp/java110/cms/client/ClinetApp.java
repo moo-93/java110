@@ -21,7 +21,7 @@ public class ClinetApp {
                 break;
             }
             try (
-                    Socket socket = new Socket("192.168.0.8", 8888);
+                    Socket socket = new Socket("localhost", 8888);
                     PrintStream out = new PrintStream(
                             new BufferedOutputStream(
                                     socket.getOutputStream()));
