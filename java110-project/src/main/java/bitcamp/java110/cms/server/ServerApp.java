@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -88,22 +89,35 @@ public class ServerApp {
                             new InputStreamReader(
                                     socket.getInputStream()));
                     ) {
-                
-                String requestLine = in.readLine();
+                // HTTP 요청 처리
                 System.out.println("클라이언트 요청 받았음");
+                boolean firstLine = true;
+                String requestURI = "";
+                while(true) {
+                    String line = in.readLine();
+                    if(firstLine) {
+                        requestURI = line.split(" ")[1];
+                        firstLine = false;
+                    }
+                    if(line.length() == 0)
+                        break;
+                }
+
 
                 // 요청 객체 준비
-                Request request = new Request(requestLine);
+                // => requestURI에서 첫 번째 문자인 '/'는 제거한다.
+                Request request = new Request(requestURI.substring(1));
 
                 // 응답 객체 준비
-                Response response = new Response(out);
+                // 메모리로 출력
+                StringWriter strWriter = new StringWriter();
+                PrintWriter bufOut = new PrintWriter(strWriter);
+                Response response = new Response(bufOut);
 
                 RequestMappingHandler mapping =
                         requestHandlerMap.getMapping(request.getAppPath());
                 if(mapping == null) {
-                    out.println("어플리케이션 경로를 찾을 수 없습니다.");
-                    out.println();
-                    out.flush();
+                    bufOut.println("어플리케이션 경로를 찾을 수 없습니다.");
                     return;
                 }
 
@@ -113,10 +127,11 @@ public class ServerApp {
                             , request, response);
                 } catch(Exception e) {
                     e.printStackTrace();
-                    out.println("요청 처리 중 오류가 발생하였습니다.");
+                    bufOut.println("요청 처리 중 오류가 발생하였습니다.");
                 }
-                out.println();
-                out.flush();
+
+                responseHTTPMessage(out, strWriter.toString());
+
             } catch(Exception e) {//try
                 System.out.println(e.getMessage());
             } finally {
@@ -124,6 +139,14 @@ public class ServerApp {
                 System.out.println("클라이언트와 연결을 끊음");
             }
         } // run method
+
+        private void responseHTTPMessage(PrintWriter out, String message) { //최소 응답 형식
+            out.println("HTTP/1.1 200 OK");
+            out.println("Content-Type: text/plain;charset=UTF-8");
+            out.println();
+            out.print(message);
+            out.flush();
+        }
 
     } // RequestWorker class
 
