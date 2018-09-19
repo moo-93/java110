@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    //소스코드(문법) 8버젼까지 인정
+    sourceCompatibility = '1.8'
+    //jvm(jdk) 8버젼까지 인정
+    targetCompatibility = '1.8'
+}
+
+dependencies {
+    // Servlet API 라이브러리
+    // 컴파일할때만 사용하고 빌드(배포)할때는 제외
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    // Spring Ioc 컨테이너 핵심 라이브러리
+    compile 'com.google.guava:guava:23.0'
+    testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    mavenCentral()
+}
