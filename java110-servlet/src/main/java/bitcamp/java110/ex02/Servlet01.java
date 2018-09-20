@@ -1,4 +1,4 @@
-package bitcamp.java110.ex01;
+package bitcamp.java110.ex02;
 
 import java.io.IOException;
 
