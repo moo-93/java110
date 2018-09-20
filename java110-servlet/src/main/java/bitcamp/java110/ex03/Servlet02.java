@@ -22,6 +22,10 @@ public class Servlet02 extends GenericServlet{
         // 출력스트림 객체를 꺼내기 전에 어떤 문자표를 사용하여 출력할 것인지 지정해야 한다.
         // 출력스트림을 꺼내기 전에 지정해야 한다 ! << 중요
         res.setContentType("text/plain; charset=UTF-8");
+        // => 서블릿 컨테이너는 이 설정에 따라 출력할 수 있는 출력스트림 객체를 리턴한다.
+        //    또한 응답할 때 Content-Type이라는 응답헤더를 추가한다.
+        // => 웹 브라우저는 Content-Type 응답 헤더의 정보에 따라
+        //    웹 서버가 보낸 콘텐트를 처리한다.
         
         PrintWriter out = res.getWriter();
         out.println("hello!");
