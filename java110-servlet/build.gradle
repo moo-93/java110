@@ -14,7 +14,8 @@ dependencies {
     // Servlet API 라이브러리
     // 컴파일할때만 사용하고 빌드(배포)할때는 제외
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-    // Spring Ioc 컨테이너 핵심 라이브러리
+    // File Upload 처리 라이브러리
+    compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3.3'
     compile 'com.google.guava:guava:23.0'
     testCompile 'junit:junit:4.12'
 }
