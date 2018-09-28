@@ -23,15 +23,31 @@ public class TeacherDeleteServlet extends HttpServlet{
                     throws ServletException, IOException  {
         int no = Integer.parseInt(request.getParameter("no"));
         
-        response.setContentType("text/plain;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        
         TeacherDao teacherDao = (TeacherDao)this.getServletContext()
                 .getAttribute("teacherDao");
-        if(teacherDao.deleteByNo(no) > 0) {
-         out.println("삭제 완료");   
-        } else {
-         out.println("해당 선생의 번호가 존재하지 않습니다.");
-        }
         
+        try { 
+            teacherDao.deleteByNo(no); 
+            response.sendRedirect("list");
+        } catch(Exception e) {
+            e.printStackTrace();
+            response.setHeader("Refresh", "5;url=list");
+            response.setContentType("text/html;charset=UTF-8");
+            
+            PrintWriter out = response.getWriter();
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<meta charset='UTF-8'>");
+            out.println("<title>선생관리</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>등록 중 오류 발생</h1>");
+            out.printf("<p>%s</p>\n", e.getMessage());
+            out.println("<p> 잠시 기다리면 목록페이지로 돌아갑니다</p>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 }

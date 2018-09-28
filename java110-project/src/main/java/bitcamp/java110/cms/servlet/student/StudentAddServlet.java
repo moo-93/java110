@@ -15,28 +15,49 @@ import bitcamp.java110.cms.domain.Student;
 @WebServlet("/student/add")
 public class StudentAddServlet extends HttpServlet{
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doGet(
+    protected void doPost(
             HttpServletRequest request,
             HttpServletResponse response)
                     throws ServletException, IOException {
-            Student s = new Student();
+
+        request.setCharacterEncoding("UTF-8");
+
+        Student s = new Student();
+        s.setName(request.getParameter("name"));
+        s.setEmail(request.getParameter("email"));
+        s.setPassword(request.getParameter("password"));
+        s.setSchool(request.getParameter("school"));
+        s.setWorking(Boolean.parseBoolean(request.getParameter("working")));
+        s.setTel(request.getParameter("tel"));
+
+
+        StudentDao studentDao = (StudentDao)this.getServletContext()
+                .getAttribute("studentDao");
+
+        try{
+            studentDao.insert(s);  
+            response.sendRedirect("list");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setHeader("Refresh", "5;url=list");
             
-            s.setName(request.getParameter("name"));
-            s.setEmail(request.getParameter("email"));
-            s.setPassword(request.getParameter("password"));
-            s.setSchool(request.getParameter("school"));
-            s.setWorking(Boolean.parseBoolean(request.getParameter("working")));
-            s.setTel(request.getParameter("tel"));
-            
-            StudentDao studentDao = (StudentDao)this.getServletContext()
-                                            .getAttribute("studentDao");
-            studentDao.insert(s);
-            
-            response.setContentType("text/plain;charset=UTF-8");
+            response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
-            out.println("등록하였습니다.");
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<meta charset='UTF-8'>");
+            out.println("<title>학생관리</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>등록 중 오류 발생</h1>");
+            out.printf("<p>%s</p>\n", e.getMessage());
+            out.println("<p> 잠시 기다리면 목록페이지로 돌아갑니다</p>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 }
