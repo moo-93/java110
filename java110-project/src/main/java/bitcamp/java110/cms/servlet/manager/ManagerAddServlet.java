@@ -1,8 +1,8 @@
 package bitcamp.java110.cms.servlet.manager;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,27 +47,17 @@ public class ManagerAddServlet extends HttpServlet {
             // 목록 페이지를 다시 요청하라고 sendRedirect()명령어를 보낸다.
             response.sendRedirect("list");
         } catch (Exception e) {
-            e.printStackTrace();
-            // 등록 결과를 출력하고 n초가 경과한 후에 목록 페이지를 요청하도록
-            // "리프레시" 명령을 설정한다.
-            // => 응답할 때 응답 헤더로 리프래시에 대한 명령을 웹 브라우저에게 알린다.
-            response.setHeader("Refresh", "5;url=list");
-
-            response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
-
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset='UTF-8'>");
-            out.println("<title>매니져관리</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>등록 중 오류 발생</h1>");
-            out.printf("<p>%s</p>\n", e.getMessage());
-            out.println("<p> 잠시 기다리면 목록페이지로 돌아갑니다</p>");
-            out.println("</body>");
-            out.println("</html>");
+            // 오류 내용을 처리하는 서블릿으로 실행을 위임한다.
+            RequestDispatcher rd = request.getRequestDispatcher("/error");
+            
+            // 위임하기 전에 작업을 수행하는데 필요한 정보를 
+            // ServletRequest 보관소에 담아 전달한다.
+            request.setAttribute("error", e);
+            request.setAttribute("message", "매니저 등록 오류!");
+            request.setAttribute("refresh", "3;url=list");
+            
+            // 작업을 위임한다.
+            rd.forward(request, response);
         }
     }
 }

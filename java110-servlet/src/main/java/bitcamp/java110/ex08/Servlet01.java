@@ -51,3 +51,23 @@ public class Servlet01 extends HttpServlet{
         out.println("</html>");
     }    
 }
+
+//리프레시 응답 프로토콜
+/*
+HTTP/1.1 200 <==== 응답 상태 코드는 일반적인 요청처리와 같다.
+Content-Type: text/html;charset=UTF-8
+Content-Length: 202
+Date: Fri, 28 Sep 2018 05:32:59 GMT
+
+<!DOCTYPE html> <==== message-body 있다.
+<html>
+<head>
+<meta http-equiv='Refresh' content='5;url=http://naver.com'>
+<meta charset='UTF-8'>
+<title>ex08</title>
+</head>
+<body>
+<h1>Server01 실행!</h1>
+</body>
+</html>
+*/
