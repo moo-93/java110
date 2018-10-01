@@ -200,4 +200,47 @@ public class ManagerMysqlDao implements ManagerDao{
             try{stmt.close();} catch( Exception e) {}
         }
     }
+    
+    @Override
+    public Manager findByEmailPassword(String email, String password) throws DaoException{
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            con = dataSource.getConnection();
+            stmt = con.createStatement();
+
+            rs = stmt.executeQuery( 
+                    "select "+ "m.mno" +
+                    ",m.name" + 
+                    ",m.email" + 
+                    ",m.tel" +
+                    ",mr.posi" + 
+                    " from p1_mgr mr join p1_memb m" + 
+                    " on mr.mrno = m.mno" +
+                    " where m.email=" + "'" + email+
+                    "' and m.pwd=password('" + password +
+                    "')");
+
+            if(rs.next()) {
+                Manager m = new Manager();
+                m.setNo(rs.getInt("mno"));
+                m.setEmail(rs.getString("email"));
+                m.setName(rs.getString("name"));
+                m.setTel(rs.getString("tel"));
+                m.setPosition(rs.getString("posi"));
+                
+                return m;
+            }
+            
+            return null;
+
+        } catch(Exception e) {
+            throw new DaoException(e);
+        } finally {
+            try{rs.close();} catch( Exception e) {}
+            try{stmt.close();} catch( Exception e) {}
+        }
+    }
+    
 }

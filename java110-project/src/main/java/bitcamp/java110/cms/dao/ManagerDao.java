@@ -12,4 +12,5 @@ public interface ManagerDao {
     Manager findByEmail(String email); 
     Manager findByNo(int no);
     int deleteByNo(int no);
+    Manager findByEmailPassword(String email, String password);
 }
