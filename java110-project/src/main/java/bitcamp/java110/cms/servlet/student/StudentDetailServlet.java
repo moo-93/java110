@@ -3,6 +3,7 @@ package bitcamp.java110.cms.servlet.student;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +38,7 @@ public class StudentDetailServlet extends HttpServlet{
         out.println("<head>");
         out.println("<meta charset='UTF-8'>");
         out.println("<title>학생 관리</title>");
+        out.println("<link rel='stylesheet' href='../css/common.css'>");
         out.println("<style>");
         out.println("table{");
         out.println("border-collapse : collapse;");
@@ -48,6 +50,10 @@ public class StudentDetailServlet extends HttpServlet{
 
         out.println("</head>");
         out.println("<body>");
+        
+        RequestDispatcher rd = request.getRequestDispatcher("/header");
+        rd.include(request, response);
+        
         out.println("<h1>학생 상세정보</h1>");
         
         if (s == null) {
@@ -72,6 +78,9 @@ public class StudentDetailServlet extends HttpServlet{
                         out.printf("location.href = 'delete?no=%d'\n",s.getNo());
                 out.println("}");
         out.println("</script>");
+        
+        rd = request.getRequestDispatcher("/footer");
+        rd.include(request, response);
         
         out.println("</body>");
         out.println("</html>");

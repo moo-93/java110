@@ -3,6 +3,7 @@ package bitcamp.java110.cms.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,11 +36,20 @@ public class ErrorServlet extends HttpServlet{
         out.println("<head>");
         out.println("<meta charset='UTF-8'>");
         out.println("<title>기능관리</title>");
+        out.println("<link rel='stylesheet' href='../css/common.css'>");
         out.println("</head>");
         out.println("<body>");
+        
+        RequestDispatcher rd = request.getRequestDispatcher("/header");
+        rd.include(request, response);
+        
         out.printf("<h1>%s</h1>", message);
         out.printf("<p>%s</p>\n", e.getMessage());
         out.println("<p> 잠시 기다리면 목록페이지로 돌아갑니다</p>");
+        
+        rd = request.getRequestDispatcher("/footer");
+        rd.include(request, response);
+        
         out.println("</body>");
         out.println("</html>");
     }
