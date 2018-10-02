@@ -71,6 +71,11 @@
         <servlet-name>Servlet05</servlet-name>
         <url-pattern>/ex06/servlet05</url-pattern>
     </servlet-mapping>
+    
+    <!-- 세션의 타이아웃 설정(딴위 : 분) -->
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
 
     <!--  클리이언트가 요청한 URL에 대해 기본 파일을 찾을 때 우선 순위 -->
     <welcome-file-list>
