@@ -1,7 +1,6 @@
 package bitcamp.java110.cms.servlet.manager;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,63 +23,21 @@ public class ManagerDetailServlet extends HttpServlet{
             HttpServletResponse response)
                     throws ServletException, IOException {
 
+        // JSP 페이지에서 사용할 데이터를 준비한다.
         int no = Integer.parseInt(request.getParameter("no"));
         ManagerDao managerDao = (ManagerDao)this.getServletContext()
                 .getAttribute("managerDao");
         Manager m = managerDao.findByNo(no);
 
+        // JSP 사용할 수 있도록 ServletRequest 보관소에 저장한다.
+        request.setAttribute("manager", m);
+
+        // JSP로 실행을 위임하기 전에 응답 콘텐츠의 타입을 설정한다.
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
 
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<meta charset='UTF-8'>");
-        out.println("<title>매니저 관리</title>");
-        out.println("<link rel='stylesheet' href='../css/common.css'>");
-        out.println("<style>");
-        out.println("table{");
-        out.println("border-collapse : collapse;");
-        out.println("}");
-        out.println("th, td { ");
-        out.println(" border : 1px solid red;");
-        out.println(" } ");
-        out.println("</style>");
-
-        out.println("</head>");
-        out.println("<body>");
-        
-        RequestDispatcher rd = request.getRequestDispatcher("/header");
+        // JSP로 실행을 위임한다. 
+        RequestDispatcher rd = request.getRequestDispatcher("/manager/detail.jsp");
         rd.include(request, response);
-        
-        out.println("<h1>매니저 상세정보</h1>");
 
-        if (m == null) {
-            out.println("<p>해당 번호의 매니저가 없습니다!</p>");
-        } else {
-            out.println("<table>");
-            out.println("<tbody>");
-            out.printf("<tr><th>번호</th> <th>%d</th></tr>\n", m.getNo());
-            out.printf("<tr><th>이름</th> <th>%s</th></tr>\n", m.getName());
-            out.printf("<tr><th>이메일</th> <th>%s</th></tr>\n",m.getEmail());
-            out.printf("<tr><th>암호</th> <th>%s</th></tr>\n", m.getPassword());
-            out.printf("<tr><th>전화</th> <th>%s</th></tr>\n", m.getTel());
-            out.printf("<tr><th>직위</th> <th>%s</th></tr>\n", m.getPosition());
-            out.printf("</tbody>");
-            out.printf("</table>");
-            
-            out.println("<button type='button' onclick='remove()'>삭제</button>");
-        }
-        out.println("<script>");
-                out.println("function remove() {");
-                        out.printf("location.href = 'delete?no=%d'\n",m.getNo());
-                out.println("}");
-        out.println("</script>");
-        
-        rd = request.getRequestDispatcher("/footer");
-        rd.include(request, response);
-        
-        out.println("</body>");
-        out.println("</html>");
     }
 }
