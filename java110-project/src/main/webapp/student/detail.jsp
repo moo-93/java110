@@ -1,4 +1,4 @@
-<%@page import="bitcamp.java110.cms.domain.Manager"%>
+<%@page import="bitcamp.java110.cms.domain.Student"%>
 <%@ page
     language="java"
     contentType="text/html; charset=UTF-8"
@@ -27,12 +27,12 @@ th, td {
 </head>
 <body>
     <jsp:include page="../header.jsp"></jsp:include>
-    <h1>매니저 상세정보(MVC)</h1>
+    <h1>학생 상세정보(MVC)</h1>
     <%
-        Manager m = (Manager)request.getAttribute("manager");
-    if(m == null){
+        Student s = (Student)request.getAttribute("student");
+    if(s == null){
     %>
-    <p>해당 번호의 매니저가 없습니다!</p>
+    <p>해당 번호의 학생이 없습니다!</p>
     <%
     } else {
     %>
@@ -41,29 +41,32 @@ th, td {
         <tbody>
             <tr>
                 <th>번호</th>
-                <td><%= m.getNo()%></td>
+                <td><%= s.getNo()%></td>
             </tr>
             <tr>
                 <th>이름</th>
-                <td><%= m.getName()%></td>
+                <td><%= s.getName()%></td>
             </tr>
             <tr>
                 <th>이메일</th>
-                <td><%= m.getEmail()%></td>
+                <td><%= s.getEmail()%></td>
             </tr>
             <tr>
                 <th>암호</th>
-                <td><%= m.getPassword()%></td>
+                <td><%= s.getPassword()%></td>
             </tr>
             <tr>
                 <th>전화</th>
-                <td><%= m.getTel()%></td>
+                <td><%= s.getTel()%></td>
             </tr>
             <tr>
-                <th>직위</th>
-                <td><%= m.getPosition()%></td>
+                <th>최종학력</th>
+                <td><%= s.getSchool()%></td>
             </tr>
-            
+            <tr>
+                <th>재직여부</th>
+                <td><%= s.isWorking()%></td>
+            </tr>
 
     
         </tbody>
@@ -71,10 +74,11 @@ th, td {
     <button type='button' onclick='remove()'>삭제</button>
     <script>
                     function remove() {
-                        location.href = <%=m.getNo()%>
+                        location.href = <%=s.getNo()%>
                     }
     </script>
-        <%
+                
+    <%
     }
     %>
     <jsp:include page="../footer.jsp"></jsp:include>

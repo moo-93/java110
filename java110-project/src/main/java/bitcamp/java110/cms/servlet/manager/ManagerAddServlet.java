@@ -35,7 +35,6 @@ public class ManagerAddServlet extends HttpServlet {
             HttpServletResponse response)
                     throws ServletException, IOException {
 
-
         // POST 방식으로 들어온 한글 데이터는
         // 다음 메서드를 호출하여 어떤 인코딩인지 알려줘야
         // getParameter() 호출할 때 정상적으로 디코딩 할 것이다.

@@ -2,6 +2,7 @@ package bitcamp.java110.cms.servlet.student;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,19 @@ public class StudentAddServlet extends HttpServlet{
 
     private static final long serialVersionUID = 1L;
 
+    @Override
+    protected void doGet(
+            HttpServletRequest request
+            , HttpServletResponse response)
+                    throws ServletException, IOException {
+        
+        response.setContentType("text/html;charset=UTF-8");
+        
+        // form.jsp로 인클루드
+        RequestDispatcher rd = request.getRequestDispatcher("/student/form.jsp");
+        rd.include(request, response);
+   }
+    
     @Override
     protected void doPost(
             HttpServletRequest request,
@@ -39,7 +53,7 @@ public class StudentAddServlet extends HttpServlet{
         try{
             studentDao.insert(s);  
             response.sendRedirect("list");
-        } catch (Exception e) {
+        } catch (Exception e) {            
             request.setAttribute("error", e);
             request.setAttribute("message", "학생 삭제 오류!");
             request.setAttribute("refresh", "3;url=list");
