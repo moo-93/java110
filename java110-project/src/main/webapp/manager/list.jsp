@@ -1,6 +1,4 @@
 <%@page import="bitcamp.java110.cms.domain.Manager"%>
-<%@page import="java.util.List"%>
-<%@page import="bitcamp.java110.cms.dao.ManagerDao"%>
 <%@ page
     language="java"
     contentType="text/html; charset=UTF-8"
@@ -38,13 +36,13 @@ th, td {
             </tr>
         </thead>
         <tbody>
+        
         <jsp:useBean
             scope="request"
             id="list"
             class="java.util.ArrayList"
-            type="java.util.List<Manager>"
+            type="java.util.List<bitcamp.java110.cms.domain.Manager>"
             />
-        
         
             <%
                 /* 위의 jsp:useBean은 다음 자바코드로 변환된다.
@@ -56,16 +54,17 @@ th, td {
                 } */
             
                 for (Manager m : list) {
+                    pageContext.setAttribute("m", m);
             %>
 
             <tr>
-                <td><%=m.getNo()%></td>
+                <td>${m.getNo()}</td>
                 <td><a
-                    href='detail?no=<%=m.getNo()%>'>
-                    <%=m.getName()%>
+                    href='detail?no=${m.getNo()}'>
+                    ${m.getName()}
                 </a></td>
-                <td><%=m.getEmail() %></td>
-                <td><%=m.getPosition()%></td>
+                <td>${m.getEmail()}</td>
+                <td>${m.getPosition()}</td>
             </tr>
             <%
 }

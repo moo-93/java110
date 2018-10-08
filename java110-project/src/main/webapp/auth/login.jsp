@@ -20,12 +20,6 @@ th {
 <body>
     <h1>로그인(MVC)</h1>
 
-    <jsp:useBean
-        scope="request"
-        id="email"
-        class="java.lang.String"
-    />
-
     <form
         action='login'
         method='post'
@@ -53,7 +47,7 @@ th {
                 <td><input
                     type='email'
                     name='email'
-                    value='<%=email %>'
+                    value='${cookie.email.value}'
                 ></td>
             </tr>
             <tr>

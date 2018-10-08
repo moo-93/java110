@@ -1,5 +1,4 @@
 <%@page import="bitcamp.java110.cms.domain.Student"%>
-<%@page import="java.util.List"%>
 <%@ page
     language="java"
     contentType="text/html; charset=UTF-8"
@@ -47,18 +46,19 @@ th, td {
             />
         
             <%
-                for (Student m : list) {
+                for (Student s : list) {
+                    pageContext.setAttribute("s",s);
             %>
 
             <tr>
-                <td><%=m.getNo()%></td>
+                <td>${s.getNo()}</td>
                 <td><a
-                    href='detail?no=<%=m.getNo()%>'>
-                    <%=m.getName()%>
+                    href='detail?no=${s.getNo()}'>
+                    ${s.getName()}
                 </a></td>
-                <td><%=m.getEmail() %></td>
-                <td><%=m.getSchool()%></td>
-                <td><%=m.isWorking()%></td>
+                <td>${s.getEmail()}</td>
+                <td>${s.getSchool()}</td>
+                <td>${s.isWorking()}</td>
             </tr>
             <%
 }
