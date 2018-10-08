@@ -1,11 +1,9 @@
-<%@page import="bitcamp.java110.cms.domain.Teacher"%>
 <%@ page
-    language="java"
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     trimDirectiveWhitespaces="true"
 %>
-
+<%@ taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,18 +36,7 @@ th, td {
         </thead>
         <tbody>
         
-        <jsp:useBean
-            scope="request"
-            id="list"
-            class="java.util.ArrayList"
-            type="java.util.List<Teacher>"
-            />
-        
-            <%
-                for (Teacher t : list) {
-                    pageContext.setAttribute("t", t);
-            %>
-
+    <c:forEach items="${list}" var="t">
             <tr>
                 <td>${t.getNo()}</td>
                 <td><a
@@ -60,9 +47,7 @@ th, td {
                 <td>${t.getPay()}</td>
                 <td>${t.getSubjects()}</td>
             </tr>
-            <%
-}
-%>
+    </c:forEach>
         </tbody>
     </table>
     <jsp:include page="../footer.jsp"></jsp:include>
