@@ -39,6 +39,7 @@ public class TeacherMysqlDao implements TeacherDao {
             throw new DaoException(e);
         } finally {
             try{stmt.close();} catch(Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 
@@ -78,6 +79,7 @@ public class TeacherMysqlDao implements TeacherDao {
         } finally {
             try{rs.close();} catch(Exception e) {}
             try{stmt.close();} catch(Exception e) {}
+            dataSource.returnConnection(con);
         }
         return list;
     }
@@ -124,6 +126,7 @@ public class TeacherMysqlDao implements TeacherDao {
         } finally {
             try{rs.close();} catch(Exception e) {}
             try{stmt.close();} catch(Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 
@@ -182,6 +185,7 @@ public class TeacherMysqlDao implements TeacherDao {
         } finally {
             try{rs.close();} catch(Exception e) {}
             try{stmt.close();} catch(Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 }

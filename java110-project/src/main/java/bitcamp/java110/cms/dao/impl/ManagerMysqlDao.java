@@ -36,6 +36,7 @@ public class ManagerMysqlDao implements ManagerDao{
             throw new DaoException(e);
         } finally {
             try{stmt.close();} catch( Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 
@@ -72,6 +73,7 @@ public class ManagerMysqlDao implements ManagerDao{
         } finally {
             try{rs.close();} catch( Exception e) {}
             try{stmt.close();} catch( Exception e) {}
+            dataSource.returnConnection(con);
         }
         return list;
     }
@@ -115,6 +117,7 @@ public class ManagerMysqlDao implements ManagerDao{
         } finally {
             try{rs.close();} catch( Exception e) {}
             try{stmt.close();} catch( Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 
@@ -157,6 +160,7 @@ public class ManagerMysqlDao implements ManagerDao{
         } finally {
             try{rs.close();} catch( Exception e) {}
             try{stmt.close();} catch( Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 
@@ -173,6 +177,7 @@ public class ManagerMysqlDao implements ManagerDao{
             throw new DaoException(e);
         } finally {
             try{stmt.close();} catch( Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 
@@ -215,7 +220,7 @@ public class ManagerMysqlDao implements ManagerDao{
         } finally {
             try{rs.close();} catch( Exception e) {}
             try{stmt.close();} catch( Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
-
 }
