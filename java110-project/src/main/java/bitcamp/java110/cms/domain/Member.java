@@ -10,7 +10,14 @@ public class Member implements Serializable{
     protected int no;
     protected String password;
     protected String tel;
+    protected String photo;
     
+    public String getPhoto() {
+        return photo;
+    }
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
     //인스턴스의 메모리를 다루는 operator = setter/gatter = accessor = property =message
     public int getNo() {
         return no;

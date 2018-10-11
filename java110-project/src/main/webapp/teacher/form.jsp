@@ -26,6 +26,7 @@ th {
     <form
         action='add'
         method='post'
+        enctype="multipart/form-data"
     >
         <table>
             <tbody>
@@ -69,6 +70,13 @@ th {
                     <td><input
                         type='text'
                         name='subjects'
+                    ></td>
+                </tr>
+                <tr>
+                    <th>사진</th>
+                    <td><input
+                        type='file'
+                        name='file1'
                     ></td>
                 </tr>
                 <tr>

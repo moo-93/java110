@@ -15,6 +15,7 @@
     rel='stylesheet'
     href='../css/common.css'
 >
+<%@ taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
 table {
     border-collapse: collapse;
@@ -22,6 +23,9 @@ table {
 
 th, td {
     border: 1px solid red;
+}
+#photo-image {
+    height: 100px;
 }
 </style>
 </head>
@@ -55,9 +59,17 @@ th, td {
                 <th>직위</th>
                 <td>${manager.position}</td>
             </tr>
-
-
-
+            <tr>
+                <th>사진</th>
+                <c:choose>
+                <c:when test="${not empty manager.photo}">
+                    <td><img id='photo-image' src='/upload/${manager.photo}'></td>
+                </c:when>
+                <c:otherwise>
+                    <td><img id='photo-image' src='/img/anonymous.png'></td>
+                </c:otherwise>
+                </c:choose>
+            </tr>
         </tbody>
     </table>
     <button
@@ -66,7 +78,7 @@ th, td {
     >삭제</button>
     <script>
                     function remove() {
-                        location.href = ${manager.no}
+                        location.href = 'delete?no=${manager.no}'
                     }
     </script>
     <jsp:include page="../footer.jsp"></jsp:include>
