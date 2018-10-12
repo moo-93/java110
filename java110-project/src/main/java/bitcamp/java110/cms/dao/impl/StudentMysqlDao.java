@@ -1,8 +1,8 @@
 package bitcamp.java110.cms.dao.impl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,23 +21,18 @@ public class StudentMysqlDao implements StudentDao{
     
     public int insert(Student student) throws DaoException{
         Connection con = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             con = dataSource.getConnection();
-            stmt = con.createStatement();
-            
+            String sql = "insert into p1_stud(sno,schl,work) values(?, ?, ?)";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, student.getNo());
+            stmt.setString(2, student.getSchool());
             String work = "";
-            if(student.isWorking())
-                work = "Y";
-            else work = "N";
-
-            String sql = "insert into p1_stud(sno,schl,work)"
-                    + " values(" + student.getNo()
-                    + ",'" + student.getSchool()
-                    + "','" + work 
-                    +"')";
-
-            return stmt.executeUpdate(sql);
+            if(student.isWorking()) work = "Y"; else work = "N";
+            stmt.setString(3, work);
+            
+            return stmt.executeUpdate();
 
         } catch (Exception e) {
             throw new DaoException(e);
@@ -50,21 +45,20 @@ public class StudentMysqlDao implements StudentDao{
     public List<Student> findAll() throws DaoException{
         ArrayList<Student> list = new ArrayList<>();
         Connection con = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             con = dataSource.getConnection();
-            stmt = con.createStatement();
-            
-            rs = stmt.executeQuery(
-                    "select m.mno "
-                            + " ,m.name"
-                            + " ,m.email"
-                            + " ,st.schl"
-                            + " ,st.work"
-                            + " from p1_memb m join p1_stud st"
-                            + " on m.mno = st.sno");
+            String sql = "select m.mno "
+                    + " ,m.name"
+                    + " ,m.email"
+                    + " ,st.schl"
+                    + " ,st.work"
+                    + " from p1_memb m join p1_stud st"
+                    + " on m.mno = st.sno"; 
+            stmt = con.prepareStatement(sql);
+            rs = stmt.executeQuery();
 
             while(rs.next()) {
                 Student s = new Student();
@@ -93,25 +87,25 @@ public class StudentMysqlDao implements StudentDao{
 
     public Student findByNo(int no) throws DaoException{
         Connection con = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             con = dataSource.getConnection();
-            stmt = con.createStatement();
-
-            rs = stmt.executeQuery(
-                    "select m.mno "
-                            + " ,m.name"
-                            + " ,m.email"
-                            + " ,m.tel"
-                            + " ,st.schl"
-                            + " ,st.work"
-                            + " ,mp.filepath"
-                            + " from p1_memb m join p1_stud st"
-                            + " on m.mno = st.sno"
-                            + " left outer join p1_memb_phot mp on st.sno = mp.mno"
-                            + " where m.mno = "+ no);
+            String sql = "select m.mno "
+                    + " ,m.name"
+                    + " ,m.email"
+                    + " ,m.tel"
+                    + " ,st.schl"
+                    + " ,st.work"
+                    + " ,mp.filepath"
+                    + " from p1_memb m join p1_stud st"
+                    + " on m.mno = st.sno"
+                    + " left outer join p1_memb_phot mp on st.sno = mp.mno"
+                    + " where m.mno = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, no);
+            rs = stmt.executeQuery();
 
             if(rs.next()) {
                 Student s = new Student();
@@ -137,12 +131,13 @@ public class StudentMysqlDao implements StudentDao{
 
     public int deleteByNo(int no) throws DaoException{
         Connection con = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             con = dataSource.getConnection();
-            stmt = con.createStatement();
-            String sql = "delete from p1_stud where sno= " + no;
-            return stmt.executeUpdate(sql);
+            String sql = "delete from p1_stud where sno= ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, no);
+            return stmt.executeUpdate();
 
         } catch(Exception e) {
             throw new DaoException(e);
@@ -154,25 +149,24 @@ public class StudentMysqlDao implements StudentDao{
     @Override
     public Student findByEmailPassword(String email, String password) throws DaoException{
         Connection con = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             con = dataSource.getConnection();
-            stmt = con.createStatement();
-
-            rs = stmt.executeQuery(
-                    "select m.mno "
-                            + " ,m.name"
-                            + " ,m.email"
-                            + " ,m.tel"
-                            + " ,st.schl"
-                            + " ,st.work"
-                            + " from p1_memb m join p1_stud st"
-                            + " on m.mno = st.sno"
-                            + " where m.email = " + "'" + email+
-                            "' and m.pwd=password('" + password +
-                            "')");
+            String sql = "select m.mno "
+                    + " ,m.name"
+                    + " ,m.email"
+                    + " ,m.tel"
+                    + " ,st.schl"
+                    + " ,st.work"
+                    + " from p1_memb m join p1_stud st"
+                    + " on m.mno = st.sno"
+                    + " where m.email = ? and m.pwd=password(?)";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, email);
+            stmt.setString(2, email);
+            rs = stmt.executeQuery();
 
             if(rs.next()) {
                 Student s = new Student();
