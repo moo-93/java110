@@ -26,7 +26,7 @@ public class ManagerListServlet extends HttpServlet {
             throws ServletException, IOException {
         
         int pageNo = 1;
-        int pageSize = 3;
+        int pageSize = 10;
         
         if (request.getParameter("pageNo") != null) {
             pageNo = Integer.parseInt(request.getParameter("pageNo"));
