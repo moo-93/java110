@@ -23,14 +23,22 @@ public class DaoBuilder {
         this.password = props.getProperty("password");
     }
     
-    public MemberDaoFactory build() throws Exception{
+    public MemberDaoFactory build() throws Exception {
         
         DataSource dataSource = new DataSource(
-                this.driver, this.url, this.username, this.password
-                );
+                this.driver, this.url, this.username, this.password);
+        
         MemberDaoFactory factory = new MemberDaoFactory();
-        factory.setataSource(dataSource);
+        factory.setDataSource(dataSource);
         
         return factory;
     }
 }
+
+
+
+
+
+
+
+
