@@ -79,7 +79,7 @@ ALTER TABLE p1_board
 -- 첨부파일
 CREATE TABLE p1_att_file (
     afno  INTEGER      NOT NULL COMMENT '파일번호', -- 파일번호
-    fl_nm VARCHAR(255) NOT NULL COMMENT '파일명', -- 파일명
+    fi_nm VARCHAR(255) NOT NULL COMMENT '파일명', -- 파일명
     bno   INTEGER      NOT NULL COMMENT '게시물번호' -- 게시물번호
 )
 COMMENT '첨부파일';
@@ -179,8 +179,8 @@ ALTER TABLE p1_lect_tchr
 
 -- 수강생
 CREATE TABLE p1_lect_stud (
-    lno INTEGER NOT NULL COMMENT '강의번호', -- 강의번호
-    sno INTEGER NOT NULL COMMENT '학생번호' -- 학생번호
+    sno INTEGER NOT NULL COMMENT '학생번호', -- 학생번호
+    lno INTEGER NOT NULL COMMENT '강의번호' -- 강의번호
 )
 COMMENT '수강생';
 
@@ -188,14 +188,14 @@ COMMENT '수강생';
 ALTER TABLE p1_lect_stud
     ADD CONSTRAINT PK_p1_lect_stud -- 수강생 기본키
         PRIMARY KEY (
-            lno, -- 강의번호
-            sno  -- 학생번호
+            sno, -- 학생번호
+            lno  -- 강의번호
         );
 
 -- 회원사진
 CREATE TABLE p1_memb_phot (
-    mno      INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
-    filepath VARCHAR(255) NOT NULL COMMENT '사진' -- 사진
+    mno   INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
+    photo VARCHAR(255) NOT NULL COMMENT '사진' -- 사진
 )
 COMMENT '회원사진';
 
@@ -288,22 +288,22 @@ ALTER TABLE p1_lect_tchr
 
 -- 수강생
 ALTER TABLE p1_lect_stud
-    ADD CONSTRAINT FK_p1_lect_TO_p1_lect_stud -- 강의 -> 수강생
-        FOREIGN KEY (
-            lno -- 강의번호
-        )
-        REFERENCES p1_lect ( -- 강의
-            lno -- 강의번호
-        );
-
--- 수강생
-ALTER TABLE p1_lect_stud
     ADD CONSTRAINT FK_p1_stud_TO_p1_lect_stud -- 학생 -> 수강생
         FOREIGN KEY (
             sno -- 학생번호
         )
         REFERENCES p1_stud ( -- 학생
             sno -- 학생번호
+        );
+
+-- 수강생
+ALTER TABLE p1_lect_stud
+    ADD CONSTRAINT FK_p1_lect_TO_p1_lect_stud -- 강의 -> 수강생
+        FOREIGN KEY (
+            lno -- 강의번호
+        )
+        REFERENCES p1_lect ( -- 강의
+            lno -- 강의번호
         );
 
 -- 회원사진

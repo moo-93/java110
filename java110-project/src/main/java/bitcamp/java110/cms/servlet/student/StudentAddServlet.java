@@ -12,65 +12,72 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.springframework.context.ApplicationContext;
+
 import bitcamp.java110.cms.domain.Student;
 import bitcamp.java110.cms.service.StudentService;
 
 @MultipartConfig(maxFileSize=2_000_000)
 @WebServlet("/student/add")
-public class StudentAddServlet extends HttpServlet{
-
+public class StudentAddServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(
-            HttpServletRequest request
-            , HttpServletResponse response)
+            HttpServletRequest request, 
+            HttpServletResponse response) 
                     throws ServletException, IOException {
-
+        
         response.setContentType("text/html;charset=UTF-8");
-
-        // form.jsp로 인클루드
-        RequestDispatcher rd = request.getRequestDispatcher("/student/form.jsp");
+        
+        // form.jsp 인클루딩
+        RequestDispatcher rd = request.getRequestDispatcher(
+                "/student/form.jsp");
         rd.include(request, response);
     }
-
+    
     @Override
     protected void doPost(
-            HttpServletRequest request,
-            HttpServletResponse response)
-                    throws ServletException, IOException {
+            HttpServletRequest request, 
+            HttpServletResponse response) 
+            throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-
+        
         Student s = new Student();
         s.setName(request.getParameter("name"));
         s.setEmail(request.getParameter("email"));
         s.setPassword(request.getParameter("password"));
+        s.setTel(request.getParameter("tel"));
         s.setSchool(request.getParameter("school"));
         s.setWorking(Boolean.parseBoolean(request.getParameter("working")));
-        s.setTel(request.getParameter("tel"));
-
-
-        StudentService studentService = (StudentService)this.getServletContext()
-                .getAttribute("studentService");
-
-        try{
+        
+        ApplicationContext iocContainer = 
+                (ApplicationContext)this.getServletContext()
+                                .getAttribute("iocContainer");
+        StudentService studentService = iocContainer.getBean(StudentService.class);
+        
+        try {
+            // 사진 데이터 처리
             Part part = request.getPart("file1");
-            if(part.getSize()>0) {
+            if (part.getSize() > 0) {
                 String filename = UUID.randomUUID().toString();
-                part.write(this.getServletContext().
-                        getRealPath("upload/" + filename));
+                part.write(this.getServletContext()
+                           .getRealPath("/upload/" + filename));
                 s.setPhoto(filename);
             }
-
-            studentService.add(s);  
+            
+            studentService.add(s);
             response.sendRedirect("list");
-        } catch (Exception e) {            
+            
+        } catch(Exception e) {
             request.setAttribute("error", e);
-            request.setAttribute("message", "학생 삭제 오류!");
+            request.setAttribute("message", "학생 등록 오류!");
             request.setAttribute("refresh", "3;url=list");
-
+            
             request.getRequestDispatcher("/error").forward(request, response);
         }
+        
     }
+ 
 }

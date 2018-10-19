@@ -4,32 +4,36 @@ plugins {
     id 'war'
 }
 
-//타입을 조정하는 느낌
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-    //소스코드(문법) 8버젼까지 인정
     sourceCompatibility = '1.8'
-    //jvm(jdk) 8버젼까지 인정
     targetCompatibility = '1.8'
 }
 
-// 프로젝트에서 사용할 라이브러리 등록
-// => 라이브러리 정보는 mavenrepository.com에서 검색하여 가져온다.
+// 프로젝트에서 사용할 라이브러리 설정
+// => 라이브러리 정보는 mvnrepository.com에서 검색하여 가져온다.
 dependencies {
     // Servlet API 라이브러리
-    // 컴파일할때만 사용하고 빌드(배포)할때는 제외
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-    // Spring Ioc 컨테이너 핵심 라이브러리
-    // compile group: 'org.springframework', name: 'spring-context', version: '5.0.9.RELEASE'
-    // mariadb jdbc driver
+    
+    // JSTL 구현 라이브러리
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+    
+    // Spring IoC 컨테이너 관련 라이브러리 
+    compile group: 'org.springframework', name: 'spring-context', version: '5.1.1.RELEASE'
+    
+    // mariadb jdbc driver 
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+    
+    // mybatis 라이브러리
+    compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
+    
     compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
     compile 'com.google.guava:guava:23.0'
     testCompile 'junit:junit:4.12'
-    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
 }
 
 // 라이브러리를 다운로드 받는 서버 설정
 repositories {
-    mavenCentral()
+    mavenCentral() //https://repo.maven.apache.org/maven2/
 }

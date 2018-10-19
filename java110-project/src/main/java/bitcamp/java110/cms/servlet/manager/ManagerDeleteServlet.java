@@ -8,32 +8,61 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+
 import bitcamp.java110.cms.service.ManagerService;
 
 @WebServlet("/manager/delete")
-public class ManagerDeleteServlet extends HttpServlet{ 
-
+public class ManagerDeleteServlet extends HttpServlet { 
     private static final long serialVersionUID = 1L;
-
-
+    
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException,IOException{
-
+    protected void doGet(
+            HttpServletRequest request, 
+            HttpServletResponse response) 
+            throws ServletException, IOException {
+        
         int no = Integer.parseInt(request.getParameter("no"));
-
-        ManagerService managerSerivce = 
-                (ManagerService)this.getServletContext().getAttribute("managerService");
-
-        try { 
-            managerSerivce.delete(no); 
+        
+        ApplicationContext iocContainer = 
+                (ApplicationContext)this.getServletContext()
+                                .getAttribute("iocContainer");
+        ManagerService managerService = iocContainer.getBean(ManagerService.class);
+        
+        try {
+            managerService.delete(no);
             response.sendRedirect("list");
-        } catch(Exception e) {
+            
+        } catch (Exception e) {
             request.setAttribute("error", e);
             request.setAttribute("message", "매니저 삭제 오류!");
             request.setAttribute("refresh", "3;url=list");
-
+            
             request.getRequestDispatcher("/error").forward(request, response);
         }
+        
     }
+    
 }
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    

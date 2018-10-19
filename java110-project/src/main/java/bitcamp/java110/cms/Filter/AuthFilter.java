@@ -15,32 +15,42 @@ import javax.servlet.http.HttpSession;
 import bitcamp.java110.cms.domain.Member;
 
 @WebFilter("/*")
-public class AuthFilter implements Filter{
-    
+public class AuthFilter implements Filter {
     @Override
     public void doFilter(
-            ServletRequest request,
-            ServletResponse response,
+            ServletRequest request, 
+            ServletResponse response, 
             FilterChain chain)
             throws IOException, ServletException {
         
-        HttpServletRequest httpRequest =(HttpServletRequest)request;
+        HttpServletRequest httpRequest = (HttpServletRequest)request;
         HttpServletResponse httpResponse = (HttpServletResponse)response;
         
         String servletPath = httpRequest.getServletPath();
         
-        if(servletPath.endsWith("add") ||
-           servletPath.endsWith("delete")) {
+        if (servletPath.endsWith("add") ||
+            servletPath.endsWith("delete")) {
             
             // 로그인 여부 검사
             HttpSession session = httpRequest.getSession();
             Member loginUser = (Member)session.getAttribute("loginUser");
-            if(loginUser == null) {
+            if (loginUser == null) {
                 httpResponse.sendRedirect("/auth/login");
-                return ;
+                return;
             }
         }
         
         chain.doFilter(request, response);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

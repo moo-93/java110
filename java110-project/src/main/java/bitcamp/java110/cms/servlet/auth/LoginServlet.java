@@ -11,68 +11,94 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.context.ApplicationContext;
+
 import bitcamp.java110.cms.domain.Member;
 import bitcamp.java110.cms.service.AuthService;
 
 @WebServlet("/auth/login")
-public class LoginServlet extends HttpServlet{
-
+public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(
-            HttpServletRequest request
-            , HttpServletResponse response)
+            HttpServletRequest request, 
+            HttpServletResponse response) 
                     throws ServletException, IOException {
         
         response.setContentType("text/html;charset=UTF-8");
         
-        RequestDispatcher rd = request.getRequestDispatcher("/auth/login.jsp");
+        // form.jsp 인클루딩
+        RequestDispatcher rd = request.getRequestDispatcher(
+                "/auth/form.jsp");
         rd.include(request, response);
     }
     
     @Override
     protected void doPost(
-            HttpServletRequest request,
-            HttpServletResponse response)
+            HttpServletRequest request, 
+            HttpServletResponse response) 
                     throws ServletException, IOException {
 
         String type = request.getParameter("type");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String save = request.getParameter("save");
-
-        // radio나 checked가 체크 되어 있지 않으면 null 
-        // 체크된경우 value값 반환  (기본값 on)
-        // 이메일 저장하기를 체크했다면 ,
-        if(save != null) {
+        
+        
+        if (save != null) {// 이메일 저장하기를 체크했다면,
             Cookie cookie = new Cookie("email", email);
             cookie.setMaxAge(60 * 60 * 24 * 15);
             response.addCookie(cookie);
-        } else { // 이메일을 저장하고 싶지 않다면
+        } else {// 이메일을 저장하고 싶지 않다면,
             Cookie cookie = new Cookie("email", "");
             cookie.setMaxAge(0);
             response.addCookie(cookie);
         }
         
-        AuthService authService = 
-                (AuthService)this.getServletContext()
-                                 .getAttribute("authService");
+        ApplicationContext iocContainer = 
+                (ApplicationContext)this.getServletContext()
+                                .getAttribute("iocContainer");
+        AuthService authService = iocContainer.getBean(AuthService.class);
         
         Member loginUser = authService.getMember(email, password, type);
         
         HttpSession session = request.getSession();
-        if(loginUser != null) {
+        if (loginUser != null) {
             // 회원 정보를 세션에 보관한다.
             session.setAttribute("loginUser", loginUser);
             
-            response.sendRedirect("../manager/list");
+            switch (type) {
+            case "student":
+                response.sendRedirect("../student/list");
+                break;
+            case "teacher":
+                response.sendRedirect("../teacher/list");
+                break; 
+            case "manager":
+                response.sendRedirect("../manager/list");
+                break; 
+            }
         } else {
-            // 로그인 된 상태에서 다른 사용자로 로그인을 시도하다가
-            // 실패한다면 무조건 세션을 무효화 시킨다.
+            // 로그인 된 상태에서 다른 사용자로 로그인을 시도하다가 
+            // 실패한다면 무조건 세션을 무효화시킨다.
             session.invalidate();
-            
+
             response.sendRedirect("login");
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

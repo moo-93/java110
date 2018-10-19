@@ -9,30 +9,37 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+
 import bitcamp.java110.cms.domain.Student;
 import bitcamp.java110.cms.service.StudentService;
 
 @WebServlet("/student/detail")
-public class StudentDetailServlet extends HttpServlet{
-
+public class StudentDetailServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
+  
     @Override
     protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
-                    throws ServletException, IOException {
+            HttpServletRequest request, 
+            HttpServletResponse response) 
+            throws ServletException, IOException {
+
         
         int no = Integer.parseInt(request.getParameter("no"));
-        StudentService studentService = (StudentService)this.getServletContext()
-                .getAttribute("studentService");
-        Student s = studentService.get(no);
         
+        ApplicationContext iocContainer = 
+                (ApplicationContext)this.getServletContext()
+                                .getAttribute("iocContainer");
+        StudentService studentService = iocContainer.getBean(StudentService.class);
+        
+        Student s = studentService.get(no);
         request.setAttribute("student", s);
         
         response.setContentType("text/html;charset=UTF-8");
         
-        RequestDispatcher rd = request.getRequestDispatcher("/student/detail.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(
+                "/student/detail.jsp");
         rd.include(request, response);
     }
+
 }

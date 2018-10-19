@@ -1,9 +1,8 @@
-<%@ page
+<%@ page language="java" 
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    trimDirectiveWhitespaces="true"
-%>
-<%@ taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core" %>
+    trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,45 +10,41 @@
 <title>강사 관리</title>
 <link rel='stylesheet' href='../css/common.css'>
 <style>
-table {
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid red;
+table, th, td {
+    border: 1px solid gray;
 }
 </style>
 </head>
 <body>
-    <jsp:include page="../header.jsp"></jsp:include>
-    <h1>강사 목록(MVC)</h1>
-    <span><a href='add'>추가</a></span>
-    <table>
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>이름</th>
-                <th>이메일</th>
-                <th>시급</th>
-                <th>과목</th>
-            </tr>
-        </thead>
-        <tbody>
-        
-    <c:forEach items="${list}" var="t">
-            <tr>
-                <td>${t.getNo()}</td>
-                <td><a
-                    href='detail?no=${t.getNo()}'>
-                    ${t.getName()}
-                </a></td>
-                <td>${t.getEmail()}</td>
-                <td>${t.getPay()}</td>
-                <td>${t.getSubjects()}</td>
-            </tr>
-    </c:forEach>
-        </tbody>
-    </table>
-    <jsp:include page="../footer.jsp"></jsp:include>
+
+<jsp:include page="../header.jsp"></jsp:include>
+
+<h1>강사 목록(MVC)</h1>
+<p><a href='add'>추가</a></p>
+<table>
+<thead>
+<tr>
+    <th>번호</th><th>이름</th><th>이메일</th> <th>강의료</th><th>강의과목</th>
+</tr>
+</thead>
+<tbody>
+
+<c:forEach  items="${list}" var="t">
+<tr>
+    <td>${t.no}</td>
+    <td><a href='detail?no=${t.no}'>${t.name}</a></td>
+    <td>${t.email}</td>
+    <td>${t.pay}</td>
+    <td>${t.subjects}</td>
+</tr>
+</c:forEach>
+
+</tbody>
+</table>
+
+<jsp:include page="../footer.jsp"/>
+
 </body>
 </html>
+
+    

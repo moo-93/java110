@@ -1,79 +1,103 @@
 package bitcamp.java110.cms.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import bitcamp.java110.cms.dao.MemberDao;
 import bitcamp.java110.cms.dao.PhotoDao;
 import bitcamp.java110.cms.dao.TeacherDao;
 import bitcamp.java110.cms.domain.Teacher;
 import bitcamp.java110.cms.service.TeacherService;
-import bitcamp.java110.cms.util.TransactionManager;
 
+@Service
 public class TeacherServiceImpl implements TeacherService {
 
-    MemberDao memberDao;
-    TeacherDao teacherDao;
-    PhotoDao photoDao;
-    
-    public void setMemberDao(MemberDao memberDao) {
-        this.memberDao = memberDao;
-    }
-
-    public void setTeacherDao(TeacherDao teacherDao) {
-        this.teacherDao = teacherDao;
-    }
-
-    public void setPhotoDao(PhotoDao photoDao) {
-        this.photoDao = photoDao;
-    }
+    @Autowired SqlSessionFactory sqlSessionFactory;
 
     @Override
     public void add(Teacher teacher) {
-        // 매니저 등록과 관련된 업무는 Service 객체에서 처리한다.
-        TransactionManager txManager = TransactionManager.getInstance();
+        SqlSession session = sqlSessionFactory.openSession();
         try {
-            txManager.startTransaction();
+            MemberDao memberDao = session.getMapper(MemberDao.class);
+            TeacherDao teacherDao = session.getMapper(TeacherDao.class);
+            PhotoDao photoDao = session.getMapper(PhotoDao.class);
+            
             memberDao.insert(teacher);
             teacherDao.insert(teacher);
             
-            if(teacher.getPhoto() != null) {
-                photoDao.insert(teacher.getNo(), teacher.getPhoto());
+            if (teacher.getPhoto() != null) {
+    
+                HashMap<String,Object> params = new HashMap<>();
+                params.put("no", teacher.getNo());
+                params.put("photo", teacher.getPhoto());
+                
+                photoDao.insert(params);
             }
-            
-            txManager.commit();
-            
-        } catch(Exception e) {
-            try {txManager.rollback();} catch(Exception e2) {}
-            throw new RuntimeException(e);
+            session.commit();
+        } catch (Exception e) {
+            session.rollback();
+            throw e;
+        } finally {
+            session.close();
         }
     }
-
+    
     @Override
-    public List<Teacher> list() {
-        return teacherDao.findAll();
+    public List<Teacher> list(int pageNo, int pageSize) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            TeacherDao teacherDao = session.getMapper(TeacherDao.class);
+            
+            HashMap<String,Object> params = new HashMap<>();
+            params.put("rowNo", (pageNo - 1) * pageSize);
+            params.put("size", pageSize);
+            
+            return teacherDao.findAll(params);
+        }
     }
-
+    
     @Override
     public Teacher get(int no) {
-        return teacherDao.findByNo(no);
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            TeacherDao teacherDao = session.getMapper(TeacherDao.class);
+            return teacherDao.findByNo(no);
+        }
     }
-
+    
     @Override
     public void delete(int no) {
-        TransactionManager txManager = TransactionManager.getInstance();
+        SqlSession session = sqlSessionFactory.openSession();
         try {
-            txManager.startTransaction();
+            MemberDao memberDao = session.getMapper(MemberDao.class);
+            TeacherDao teacherDao = session.getMapper(TeacherDao.class);
+            PhotoDao photoDao = session.getMapper(PhotoDao.class);
             
-            if(teacherDao.deleteByNo(no) == 0) {
+            if (teacherDao.delete(no) == 0) {
                 throw new RuntimeException("해당 번호의 데이터가 없습니다.");
             }
             photoDao.delete(no);
             memberDao.delete(no);
             
-            txManager.commit();
-        } catch(Exception e) {
-            try {txManager.rollback();} catch(Exception e2) {}
-            throw new RuntimeException(e);
+            session.commit();
+        } catch (Exception e) {
+            session.rollback();
+            throw e;
+        } finally {
+            session.close();
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

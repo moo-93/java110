@@ -10,64 +10,56 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+
 import bitcamp.java110.cms.domain.Manager;
 import bitcamp.java110.cms.service.ManagerService;
 
 @WebServlet("/manager/list")
-public class ManagerListServlet extends HttpServlet{ 
-
+public class ManagerListServlet extends HttpServlet { 
     private static final long serialVersionUID = 1L;
-
-    // HttpServlet은 ioc 컨테이너를 관리하지 않기 때문에 dao를 수동으로 연결해줘야 한다.
+    
     @Override
     protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
-                    throws ServletException, IOException{
-
-        // JSP가 사용할 데이터 준비
-        ManagerService managerservice = (ManagerService)this.getServletContext()
-                .getAttribute("managerService");
-        List<Manager> list = managerservice.list();
-
-        // JSP 사용할 수 있도록 ServletRequest 보관소에 저장한다.
+            HttpServletRequest request, 
+            HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        int pageNo = 1;
+        int pageSize = 3;
+        
+        if (request.getParameter("pageNo") != null) {
+            pageNo = Integer.parseInt(request.getParameter("pageNo"));
+            if (pageNo < 1)
+                pageNo = 1;
+        }
+        
+        if (request.getParameter("pageSize") != null) {
+            pageSize = Integer.parseInt(request.getParameter("pageSize"));
+            if (pageSize < 3 || pageSize > 10)
+                pageSize = 3;
+        }
+        
+        ApplicationContext iocContainer = 
+                (ApplicationContext)this.getServletContext()
+                                .getAttribute("iocContainer");
+        ManagerService managerService = iocContainer.getBean(ManagerService.class);
+        
+        List<Manager> list = managerService.list(pageNo, pageSize);
+        
         request.setAttribute("list", list);
-
-        // JSP로 실행을 위임하기 전에 응답 콘텐츠의 타입을 설정한다.
+        
         response.setContentType("text/html;charset=UTF-8");
-
-        // JSP로 실행을 위임한다. 
-        RequestDispatcher rd = request.getRequestDispatcher("/manager/list.jsp");
+        
+        RequestDispatcher rd = request.getRequestDispatcher(
+                "/manager/list.jsp");
         rd.include(request, response);
-
-        // 이제 서블릿은 UI를 생성하는 코드가 없다.
-        // UI 생성은 JSP 페이지에 맡겼다.
-        // Servlet
-        //  - 클라이언트 요청을 받고 요청 파라미터 값을 사용하기 적합하게 가공하는 일을 한다.
-        //  - DAO를 호출하여 데이터를 준비한다.
-        //  - JSP에게 실행을 위임한다.
-        //  - "Controller" 컴포넌트라 부른다.
-        // DAO
-        //  - DBMS와 연동하여 데이터를 처리한다.
-        //  - "Model" 컴포넌트라 부른다.
-        // JSP
-        //  - 클라이언트가 출력할 화면을 생성한다.
-        //  - "View" 컴포넌트라 부른다.
-        //
-        // 클라이언트 요청이 들어왔을 때
-        // 이렇게 역할을 쪼개서 처리하는 방식을
-        // "MVC 아키텍쳐(모델)"이라 부른다.
-        //
-        // MVC 모델 1
-        // 요청 ---> JSP ---> DAO ---> DBMS
-        //    <---     <---      <---
-        // MVC 모델 2
-        // 요청 ---> Servlet ---> DAO ---> DBMS
-        //    <---  ^|     <---      <---        
-        //          ||
-        //          ||
-        //          |v
-        //       JSP 페이지
-
     }
 }
+
+
+
+
+
+
+
