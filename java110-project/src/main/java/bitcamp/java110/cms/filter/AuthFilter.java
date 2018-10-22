@@ -1,4 +1,4 @@
-package bitcamp.java110.cms.Filter;
+package bitcamp.java110.cms.filter;
 
 import java.io.IOException;
 
@@ -34,6 +34,7 @@ public class AuthFilter implements Filter {
             // 로그인 여부 검사
             HttpSession session = httpRequest.getSession();
             Member loginUser = (Member)session.getAttribute("loginUser");
+            System.out.println(loginUser);
             if (loginUser == null) {
                 httpResponse.sendRedirect("/auth/login");
                 return;
