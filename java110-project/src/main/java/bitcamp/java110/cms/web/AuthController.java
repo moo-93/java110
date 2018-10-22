@@ -1,4 +1,4 @@
-package bitcamp.java110.cms.web.auth;
+package bitcamp.java110.cms.web;
 
 import java.util.ArrayList;
 
@@ -15,13 +15,13 @@ import bitcamp.java110.cms.mvc.RequestMapping;
 import bitcamp.java110.cms.service.AuthService;
 
 @Component
-public class LoginController { 
+public class AuthController {
 
     @Autowired
     AuthService authService;
-
+    
     @RequestMapping("/auth/login")
-    public String service(
+    public String login(
             HttpServletRequest request, 
             HttpServletResponse response) { 
 
@@ -69,18 +69,15 @@ public class LoginController {
             return "redirect:login";
         }
     }
+    
+    @RequestMapping("/auth/logout")
+    public String service(
+            HttpServletRequest request, 
+            HttpServletResponse response) {
+        
+        HttpSession session = request.getSession();
+        session.invalidate();
+
+        return "redirect:login";
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
