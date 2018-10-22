@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,66 +22,62 @@ public class TeacherController {
 
     @Autowired
     TeacherService teacherService;
-    
+
+    @Autowired
+    ServletContext sc;
+
     @RequestMapping("/teacher/list")
     public String list(
             HttpServletRequest request, 
             HttpServletResponse response) 
-            throws ServletException, IOException {
+                    throws ServletException, IOException {
 
         int pageNo = 1;
         int pageSize = 10;
-        
+
         if (request.getParameter("pageNo") != null) {
             pageNo = Integer.parseInt(request.getParameter("pageNo"));
             if (pageNo < 1)
                 pageNo = 1;
         }
-        
+
         if (request.getParameter("pageSize") != null) {
             pageSize = Integer.parseInt(request.getParameter("pageSize"));
             if (pageSize < 3 || pageSize > 10)
                 pageSize = 3;
         }
-        
-        
+
+
         List<Teacher> list = teacherService.list(pageNo, pageSize);
         request.setAttribute("list", list);
-        
+
         response.setContentType("text/html;charset=UTF-8");
         return "/teacher/list.jsp";
     }
-    
+
     @RequestMapping("/teacher/detail")
     public String detail(
             HttpServletRequest request, 
             HttpServletResponse response) {
 
         int no = Integer.parseInt(request.getParameter("no"));
-        
+
         Teacher t = teacherService.get(no);
         request.setAttribute("teacher", t);
         return "/teacher/detail.jsp";
     }
-    
+
     @RequestMapping("/teacher/delete")
     public String delete(
             HttpServletRequest request, 
             HttpServletResponse response) {
 
         int no = Integer.parseInt(request.getParameter("no"));
-        
-        try {
-            teacherService.delete(no);
-            return "redirect:list";
-        } catch (Exception e) {
-            request.setAttribute("error", e);
-            request.setAttribute("message", "강사 삭제 오류!");
-            request.setAttribute("refresh", "3;url=list");
-            return "/error.jsp";
-        }
+
+        teacherService.delete(no);
+        return "redirect:list";
     }
-    
+
     @RequestMapping("/teacher/add")
     public String add(
             HttpServletRequest request, 
@@ -100,24 +97,16 @@ public class TeacherController {
         t.setPay(Integer.parseInt(request.getParameter("pay")));
         t.setSubjects(request.getParameter("subjects"));
 
-
-        try {
-            // 사진 데이터 처리
-            Part part = request.getPart("file1");
-            if (part.getSize() > 0) {
-                String filename = UUID.randomUUID().toString();
-                part.write(request.getServletContext()
-                        .getRealPath("/upload/" + filename));
-                t.setPhoto(filename);
-            }
-
-            teacherService.add(t);
-            return "redirect:list";
-        } catch(Exception e) {
-            request.setAttribute("error", e);
-            request.setAttribute("message", "강사 등록 오류!");
-            request.setAttribute("refresh", "3;url=list");
-            return "/error.jsp";
+        // 사진 데이터 처리
+        Part part = request.getPart("file1");
+        if (part.getSize() > 0) {
+            String filename = UUID.randomUUID().toString();
+            part.write(sc.getRealPath("/upload/" + filename));
+            t.setPhoto(filename);
         }
+
+        teacherService.add(t);
+        return "redirect:list";
+
     }
 }

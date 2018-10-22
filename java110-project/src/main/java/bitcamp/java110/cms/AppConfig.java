@@ -1,5 +1,6 @@
 package bitcamp.java110.cms;
 
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
@@ -8,13 +9,10 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-
-import bitcamp.java110.cms.service.ManagerService;
 @ComponentScan(basePackages="bitcamp.java110.cms")
 @PropertySource("classpath:/bitcamp/java110/cms/conf/jdbc.properties")
 
@@ -22,6 +20,8 @@ import bitcamp.java110.cms.service.ManagerService;
 @MapperScan("bitcamp.java110.cms.dao")
 public class AppConfig {
 
+    public static ServletContext sc;
+    
     @Autowired
     Environment env;
 
@@ -66,8 +66,13 @@ public class AppConfig {
         }
     }
     
+    @Bean
+    public ServletContext servletContext() {
+        return sc;
+    }
+    
     // 주로 테스트용!
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         ApplicationContext iocContainer = 
                 new AnnotationConfigApplicationContext(AppConfig.class);
@@ -89,5 +94,5 @@ public class AppConfig {
         ManagerService s = (ManagerService) iocContainer.getBean(ManagerService.class);
         System.out.println(s.list(1, 5));
         
-    }
+    }*/
 }
