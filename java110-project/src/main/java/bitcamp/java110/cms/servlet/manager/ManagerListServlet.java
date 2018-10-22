@@ -48,12 +48,8 @@ public class ManagerListServlet extends HttpServlet {
         List<Manager> list = managerService.list(pageNo, pageSize);
         
         request.setAttribute("list", list);
+        request.setAttribute("viewUrl", "/manager/list.jsp");
         
-        response.setContentType("text/html;charset=UTF-8");
-        
-        RequestDispatcher rd = request.getRequestDispatcher(
-                "/manager/list.jsp");
-        rd.include(request, response);
     }
 }
 
