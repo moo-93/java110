@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import bitcamp.java110.cms.domain.Manager;
-import bitcamp.java110.cms.mvc.RequestMapping;
-import bitcamp.java110.cms.mvc.RequestParam;
 import bitcamp.java110.cms.service.ManagerService;
 
-@Component
+@Controller
 public class ManagerController {
 
     @Autowired
@@ -25,10 +25,10 @@ public class ManagerController {
     @Autowired
     ServletContext sc;
 
+    
+    //@RequestParam 파라미터명이 원하는 파라미터명과 같고 required가 false이면 생략 가능
     @RequestMapping("/manager/detail")
-    public String detail(
-            @RequestParam("no") int no,
-            Map<String,Object> map) {
+    public String detail(int no, Map<String,Object> map) {
 
         Manager m = managerService.get(no);
         map.put("manager", m);
@@ -55,7 +55,7 @@ public class ManagerController {
     }
 
     @RequestMapping("/manager/delete")
-    public String delete (@RequestParam("no") int no) {
+    public String delete (int no) {
 
         managerService.delete(no);
         return "redirect:list";

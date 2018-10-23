@@ -25,6 +25,10 @@ public class AppConfig {
     @Autowired
     Environment env;
 
+    public AppConfig() {
+        System.out.println("AppConfig() 호출됨!");
+    }
+    
     @Bean(destroyMethod="close")
     public DataSource dataSource() {
         System.out.println("Datasource 객체 생성!");
@@ -66,10 +70,6 @@ public class AppConfig {
         }
     }
     
-    @Bean
-    public ServletContext servletContext() {
-        return sc;
-    }
     
     // 주로 테스트용!
     /*public static void main(String[] args) {
