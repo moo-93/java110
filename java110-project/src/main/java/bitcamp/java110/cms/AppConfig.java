@@ -13,11 +13,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages="bitcamp.java110.cms")
 @PropertySource("classpath:/bitcamp/java110/cms/conf/jdbc.properties")
-
-// Mybatis에서 자동으로 DAO를 생성할 때 사용할 인터페이스가 들어 있는 패키지 설정
 @MapperScan("bitcamp.java110.cms.dao")
+
+// 트랜젝션 관리자를 활성화하려면 다음 에노테이션을 붙여야 한다.
+@EnableTransactionManagement
 public class AppConfig {
 
     public static ServletContext sc;
@@ -70,6 +74,21 @@ public class AppConfig {
         }
     }
     
+    // 트랜젝션 관리자의 이름은 반드시 "transactionManager"이어야 한다.
+    // 그래서 메서드 이름을 다음과 같이 지은 것이다.
+    // Spring에서 트랜젝션 관리자를 찾을 때 이 이름으로 찾는다.
+    // 만약 트랜젝션 이름을 다른 이름으로 지었다면
+    // 트랜젝션 관리 설정에서 그 이름을 알려줘야 한다.
+    public PlatformTransactionManager transactionManager(
+            DataSource dataSource) {
+        // 트랜젝션 관리자가 하는 일은 DB 커넥션의 commit과 rollback을 다루는 것이다.
+        // 따라서 트랜젝션 관리자는 DB 커넥션을 제공해주는
+        // DataSource(DB 커넥션 풀)가 필요하다.
+        // 그래서 트랜젝션 관리자를 만들 때 반드시 DataSource 객체를 넘겨줘야 한다.
+        // 물론 관리자 객체를 만든 후에 세터를 호출해서 넘겨줘도 된다.
+        return new DataSourceTransactionManager();
+        
+    }
     
     // 주로 테스트용!
     /*public static void main(String[] args) {
