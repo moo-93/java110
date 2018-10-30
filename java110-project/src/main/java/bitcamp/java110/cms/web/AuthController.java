@@ -7,32 +7,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import bitcamp.java110.cms.domain.Member;
 import bitcamp.java110.cms.service.AuthService;
 
 @Controller
+@RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
     AuthService authService;
     
-    @RequestMapping("/auth/login")
+    public AuthController(AuthService authService) {
+        super();
+        this.authService = authService;
+    }
+    @GetMapping("form")
+    public void form() {
+        
+    }
+    @PostMapping("login")
     public String login(
             String type,
             String email,
             String password,
             String save,
-            HttpServletRequest request, 
             HttpServletResponse response,
             HttpSession session) { 
-
-        if(request.getMethod().equals("GET")) {
-            return "/auth/form.jsp";
-        }
 
         ArrayList<Cookie> cookies = new ArrayList<>();
 
@@ -48,7 +52,6 @@ public class AuthController {
 
         Member loginUser = authService.getMember(email, password, type);
 
-        session = request.getSession();
         if (loginUser != null) {
             // 회원 정보를 세션에 보관한다.
             session.setAttribute("loginUser", loginUser);
@@ -67,11 +70,11 @@ public class AuthController {
             return "redirect:" + redirectUrl;
         } else {
             session.invalidate();
-            return "redirect:login";
+            return "redirect:form";
         }
     }
     
-    @RequestMapping("/auth/logout")
+    @GetMapping("logout")
     public String service(
             HttpServletRequest request, 
             HttpServletResponse response) {
@@ -79,6 +82,6 @@ public class AuthController {
         HttpSession session = request.getSession();
         session.invalidate();
 
-        return "redirect:login";
+        return "redirect:form";
     }
 }

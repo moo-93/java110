@@ -1,46 +1,49 @@
 package bitcamp.java110.cms.web;
 
+import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import bitcamp.java110.cms.domain.Manager;
 import bitcamp.java110.cms.service.ManagerService;
 
 @Controller
+@RequestMapping("/manager")
 public class ManagerController {
 
-    @Autowired
     ManagerService managerService;
-
-    @Autowired
     ServletContext sc;
-
     
-    //@RequestParam 파라미터명이 원하는 파라미터명과 같고 required가 false이면 생략 가능
-    @RequestMapping("/manager/detail")
-    public String detail(int no, Map<String,Object> map) {
-
-        Manager m = managerService.get(no);
-        map.put("manager", m);
-        return "/manager/detail.jsp";
-
+    public ManagerController(
+            ManagerService managerService,
+            ServletContext sc) {
+        super();
+        this.managerService = managerService;
+        this.sc = sc;
     }
 
-    @RequestMapping("/manager/list")
-    public String list(
-            @RequestParam(value="pageNo", defaultValue="1") int pageNo,
-            @RequestParam(value="pageSize", defaultValue="3") int pageSize,
-            Map<String,Object> map) {
+    @GetMapping("detail")
+    public void detail(int no, Model model) {
+
+        Manager m = managerService.get(no);
+        model.addAttribute("manager", m);
+    }
+
+    @GetMapping("list")
+    public void list(
+            @RequestParam(defaultValue="1") int pageNo,
+            @RequestParam(defaultValue="3") int pageSize,
+            Model model) {
 
         if (pageNo < 1)
             pageNo = 1;
@@ -50,31 +53,27 @@ public class ManagerController {
 
         List<Manager> list = managerService.list(pageNo, pageSize);
 
-        map.put("list", list);
-        return "/manager/list.jsp";
+        model.addAttribute("list", list);
     }
 
-    @RequestMapping("/manager/delete")
+    @GetMapping("delete")
     public String delete (int no) {
 
         managerService.delete(no);
         return "redirect:list";
     }
 
-    @RequestMapping("/manager/add")
-    public String add(
-            Manager manager,
-            HttpServletRequest request) throws Exception{
-
-        if(request.getMethod().equals("GET")) {
-            return "/manager/form.jsp";
-        }
+    @GetMapping("form")
+    public void form() {}
+    
+    @PostMapping("add")
+    public String add(Manager manager,
+            MultipartFile file1) throws Exception{
 
         // 사진 데이터 처리
-        Part part = request.getPart("file1");
-        if (part.getSize() > 0) {
+        if (file1.getSize() > 0) {
             String filename = UUID.randomUUID().toString();
-            part.write(sc.getRealPath("/upload/" + filename));
+            file1.transferTo(new File(sc.getRealPath("/upload/" + filename)));
             manager.setPhoto(filename);
         }
         
