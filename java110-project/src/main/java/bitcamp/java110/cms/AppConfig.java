@@ -27,7 +27,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         ))
 */
 
-@PropertySource("classpath:/bitcamp/java110/cms/conf/jdbc.properties")
+@PropertySource(
+        {"classpath:/bitcamp/java110/cms/conf/jdbc.properties",
+         "classpath:/bitcamp/java110/cms/conf/sec.properties" })
 @MapperScan("bitcamp.java110.cms.dao")
 
 // 트랜젝션 관리자를 활성화하려면 다음 에노테이션을 붙여야 한다.

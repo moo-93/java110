@@ -18,7 +18,7 @@ public class MyWebApplicationInitalizer
         // -> META-INF/services 폴더를 찾는다.
         // => 다음 이름을 갖는 파일이 있는지 확인한다.
         //
-        // => javax.ervlet.ServletContainerInitalizer
+        // => javax.Servlet.ServletContainerInitalizer
         //
         // => 해당 이름을 갖는 파일이 있다면
         //    그 파일에 등록된 클래스를 클래스를 찾아.
